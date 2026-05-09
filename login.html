@@ -196,24 +196,128 @@ button:hover{
     line-height:1.8;
 }
 
-@media(max-width:480px){
+@media (max-width: 992px){
 
 .login-container{
-    padding:30px 22px;
-    border-radius:28px;
-}
-
-.logo-img{
-    width:90px;
-    height:90px;
+    max-width:450px;
+    padding:35px 25px;
 }
 
 .logo-box h1{
-    font-size:28px;
+    font-size:30px;
+}
+
+}
+
+@media (max-width: 768px){
+
+body{
+    padding:20px;
+}
+
+.login-container{
+    width:100%;
+    max-width:100%;
+    border-radius:25px;
+    padding:30px 22px;
+}
+
+.logo-img{
+    width:85px;
+    height:85px;
+}
+
+.logo-box h1{
+    font-size:26px;
+}
+
+.logo-box p{
+    font-size:14px;
+}
+
+input{
+    padding:14px 45px 14px 14px;
+    font-size:15px;
 }
 
 button{
+    padding:14px;
     font-size:16px;
+}
+
+.footer-text{
+    font-size:13px;
+}
+
+}
+
+@media (max-width: 480px){
+
+body{
+    align-items:center;
+    padding:15px;
+}
+
+.login-container{
+    padding:25px 18px;
+    border-radius:22px;
+}
+
+.logo-img{
+    width:75px;
+    height:75px;
+}
+
+.logo-box h1{
+    font-size:23px;
+}
+
+.logo-box p{
+    font-size:13px;
+}
+
+label{
+    font-size:14px;
+}
+
+input{
+    font-size:14px;
+    border-radius:14px;
+}
+
+button{
+    font-size:15px;
+    border-radius:14px;
+}
+
+.error{
+    font-size:13px;
+    padding:12px;
+}
+
+}
+
+@media (max-width: 360px){
+
+.login-container{
+    padding:22px 15px;
+}
+
+.logo-box h1{
+    font-size:20px;
+}
+
+.logo-img{
+    width:65px;
+    height:65px;
+}
+
+input{
+    padding:12px 40px 12px 12px;
+}
+
+button{
+    padding:12px;
 }
 
 }
