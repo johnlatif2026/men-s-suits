@@ -23,16 +23,29 @@
         .login-container {
             background: white;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 90%;
             max-width: 400px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2 {
             text-align: center;
             margin-bottom: 30px;
             color: #333;
+            font-size: 28px;
         }
 
         .input-group {
@@ -41,75 +54,90 @@
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #666;
+            font-weight: bold;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.3s;
         }
 
         button:hover {
-            background: #5a67d8;
+            transform: translateY(-2px);
         }
 
         .error {
             background: #fee;
             color: #c33;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
+            border-right: 4px solid #c33;
         }
 
         .info {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
             color: #666;
             font-size: 14px;
+        }
+
+        .info p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>🔐 تسجيل الدخول للوحة التحكم</h2>
+        <h2>🔐 تسجيل الدخول</h2>
         <div id="errorMsg" class="error" style="display: none;"></div>
         <form id="loginForm">
             <div class="input-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="username" required>
+                <label>👤 اسم المستخدم</label>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
             </div>
             <div class="input-group">
-                <label>كلمة المرور</label>
-                <input type="password" id="password" required>
+                <label>🔒 كلمة المرور</label>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
             </div>
-            <button type="submit">دخول</button>
+            <button type="submit">🚪 دخول</button>
         </form>
         <div class="info">
-            <p>بيانات الدخول التجريبية:</p>
-            <p>اسم المستخدم: admin</p>
-            <p>كلمة المرور: admin123</p>
+            <p>📋 بيانات الدخول التجريبية:</p>
+            <p><strong>admin</strong> / <strong>admin123</strong></p>
         </div>
     </div>
 
     <script>
-        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        // تحديد API URL تلقائياً
+        const API_URL = window.location.origin;
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -132,10 +160,10 @@
                     localStorage.setItem('token', data.token);
                     window.location.href = '/dashboard';
                 } else {
-                    showError(data.message || 'خطأ في تسجيل الدخول');
+                    showError(data.message || '❌ اسم المستخدم أو كلمة المرور غير صحيحة');
                 }
             } catch (error) {
-                showError('حدث خطأ في الاتصال بالخادم');
+                showError('⚠️ حدث خطأ في الاتصال بالخادم');
             }
         });
         
