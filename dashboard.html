@@ -1,567 +1,1042 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - ملوك النزاهة</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-            background: #f5f7fa;
-        }
+<meta charset="UTF-8">
 
-        .dashboard-header {
-            background: white;
-            padding: 20px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-        .dashboard-header h1 {
-            color: #333;
-            font-size: 24px;
-        }
+<title>لوحة التحكم - ملوك النزاهة</title>
 
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+<link rel="icon"
+type="image/png"
+href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
 
-        .refresh-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-        .refresh-btn:hover {
-            background: #218838;
-            transform: scale(1.05);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
+<style>
 
-        .logout-btn:hover {
-            background: #c82333;
-            transform: scale(1.05);
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .auto-refresh {
-            background: #17a2b8;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
+body{
+    font-family:'Cairo',sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
 
-        .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
+/* ================= HEADER ================= */
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+.dashboard-header{
 
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s;
-        }
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
+    padding:20px 30px;
 
-        .stat-number {
-            font-size: 42px;
-            font-weight: bold;
-            color: #667eea;
-            margin: 10px 0;
-        }
+    display:flex;
 
-        .stat-label {
-            color: #666;
-            font-size: 16px;
-        }
+    justify-content:space-between;
 
-        .orders-section {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+    align-items:center;
 
-        .orders-section h2 {
-            margin-bottom: 20px;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    flex-wrap:wrap;
 
-        .last-update {
-            font-size: 12px;
-            color: #666;
-            font-weight: normal;
-        }
+    gap:15px;
 
-        .orders-table {
-            width: 100%;
-            overflow-x: auto;
-        }
+    color:white;
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
 
-        th, td {
-            padding: 12px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
-        }
+}
 
-        th {
-            background: #f8f9fa;
-            color: #333;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
-        }
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
 
-        select {
-            padding: 6px 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            font-size: 14px;
-        }
+.logo-box img{
 
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+    width:65px;
+    height:65px;
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 12px;
-        }
+    border-radius:50%;
 
-        .delete-btn:hover {
-            background: #c82333;
-            transform: scale(1.05);
-        }
+    object-fit:cover;
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 18px;
-            color: #666;
-        }
+    border:3px solid rgba(255,255,255,.3);
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+}
 
-        .updating {
-            animation: pulse 0.5s ease;
-        }
+.logo-box h1{
+    font-size:28px;
+    font-weight:800;
+}
 
-        @media (max-width: 768px) {
-            th, td {
-                font-size: 11px;
-                padding: 6px;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .dashboard-header {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-    </style>
+.header-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.auto-refresh{
+
+    background:rgba(255,255,255,.15);
+
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    backdrop-filter:blur(10px);
+
+}
+
+.refresh-btn,
+.logout-btn{
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+    font-family:'Cairo',sans-serif;
+
+}
+
+.refresh-btn{
+    background:#28a745;
+    color:white;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.refresh-btn:hover,
+.logout-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+    max-width:1500px;
+    margin:30px auto;
+    padding:0 20px;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.stat-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+    transition:.3s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.stat-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background:rgba(102,126,234,.08);
+
+    border-radius:50%;
+
+    top:-40px;
+    left:-40px;
+
+}
+
+.stat-card:hover{
+    transform:translateY(-6px);
+}
+
+.stat-label{
+
+    color:#777;
+
+    font-size:16px;
+
+    margin-bottom:15px;
+
+    font-weight:600;
+
+}
+
+.stat-number{
+
+    font-size:42px;
+
+    color:#667eea;
+
+    font-weight:800;
+
+}
+
+/* ================= ORDERS ================= */
+
+.orders-section{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.orders-section h2{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:25px;
+
+    color:#333;
+
+}
+
+.last-update{
+    color:#888;
+    font-size:13px;
+}
+
+.orders-table{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+}
+
+th{
+
+    background:#667eea;
+
+    color:white;
+
+    padding:15px;
+
+    text-align:right;
+
+    font-size:15px;
+
+    position:sticky;
+
+    top:0;
+
+}
+
+td{
+
+    padding:15px;
+
+    border-bottom:1px solid #eee;
+
+    vertical-align:top;
+
+    font-size:14px;
+
+}
+
+tr:hover{
+    background:#f9fbff;
+}
+
+select{
+
+    padding:10px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    font-family:'Cairo',sans-serif;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+}
+
+select:focus{
+    outline:none;
+    border-color:#667eea;
+}
+
+.delete-btn{
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 14px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-family:'Cairo',sans-serif;
+
+    font-size:13px;
+
+}
+
+.delete-btn:hover{
+    transform:scale(1.05);
+    background:#c82333;
+}
+
+.loading{
+
+    text-align:center;
+
+    padding:40px;
+
+    font-size:18px;
+
+    color:#777;
+
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes pulse{
+
+0%{
+opacity:1;
+}
+
+50%{
+opacity:.5;
+}
+
+100%{
+opacity:1;
+}
+
+}
+
+.updating{
+    animation:pulse .5s ease;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:992px){
+
+.dashboard-header{
+    padding:20px;
+}
+
+.logo-box h1{
+    font-size:24px;
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-header{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+.header-actions{
+
+    justify-content:center;
+
+    width:100%;
+
+}
+
+.stats{
+    grid-template-columns:1fr;
+}
+
+.orders-section{
+    padding:18px;
+}
+
+.orders-section h2{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+th,
+td{
+
+    font-size:12px;
+
+    padding:10px;
+
+}
+
+.stat-number{
+    font-size:34px;
+}
+
+}
+
+@media(max-width:480px){
+
+.container{
+    padding:0 12px;
+}
+
+.logo-box{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+.logo-box img{
+    width:55px;
+    height:55px;
+}
+
+.logo-box h1{
+    font-size:21px;
+}
+
+.refresh-btn,
+.logout-btn{
+
+    width:100%;
+
+}
+
+.auto-refresh{
+
+    width:100%;
+
+    text-align:center;
+
+}
+
+.stat-card{
+    padding:22px;
+}
+
+.stat-number{
+    font-size:28px;
+}
+
+}
+
+</style>
+
 </head>
-<body>
-    <div class="dashboard-header">
-        <h1>📊 لوحة تحكم المتجر</h1>
-        <div class="header-actions">
-            <div class="auto-refresh">
-                🔄 تحديث تلقائي كل 3 ثواني
-            </div>
-            <button class="refresh-btn" onclick="forceRefresh()">🔄 تحديث يدوي</button>
-            <button class="logout-btn" onclick="logout()">🚪 تسجيل خروج</button>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-label">📦 إجمالي الطلبات</div>
-                <div class="stat-number" id="totalOrders">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">💰 إجمالي الإيرادات</div>
-                <div class="stat-number" id="totalRevenue">0 ج.م</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">🛒 طلبات الشراء</div>
-                <div class="stat-number" id="buyOrders">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">📅 طلبات الإيجار</div>
-                <div class="stat-number" id="rentOrders">0</div>
-            </div>
-        </div>
-        
-        <div class="orders-section">
-            <h2>
-                📋 قائمة الطلبات
-                <span class="last-update" id="lastUpdateTime"></span>
-            </h2>
-            <div class="orders-table">
-                <table id="ordersTable">
-                    <thead>
-                        <tr>
-                            <th>رقم الطلب</th>
-                            <th>العميل</th>
-                            <th>المنتجات</th>
-                            <th>الإجمالي</th>
-                            <th>الحالة</th>
-                            <th>طريقة الدفع</th>
-                            <th>التاريخ</th>
-                            <th>إجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersBody">
-                        <tr>
-                            <td colspan="8" class="loading">⏳ جاري التحميل...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        const API_URL = window.location.origin;
-        let refreshInterval = null;
-        let isUpdating = false;
-        
-        async function checkAuth() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = '/login';
-                return false;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/api/verify-token`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    localStorage.removeItem('token');
-                    window.location.href = '/login';
-                    return false;
-                }
-                
-                return true;
-            } catch (error) {
-                console.error('Auth error:', error);
-                return false;
-            }
-        }
-        
-        async function loadDashboard() {
-            if (isUpdating) return;
-            isUpdating = true;
-            
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            
-            try {
-                const ordersBody = document.getElementById('ordersBody');
-                ordersBody.classList.add('updating');
-                
-                const response = await fetch(`${API_URL}/api/orders`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const orders = await response.json();
-                    displayOrders(orders);
-                    updateStats(orders);
-                    updateLastUpdateTime();
-                }
-                
-                setTimeout(() => {
-                    ordersBody.classList.remove('updating');
-                }, 300);
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            } finally {
-                isUpdating = false;
-            }
-        }
-        
-        function displayOrders(orders) {
-            const tbody = document.getElementById('ordersBody');
-            
-            if (!orders || orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">📭 لا توجد طلبات حتى الآن</td></tr>';
-                return;
-            }
-            
-            console.log('📋 عرض الطلبات:', orders.map(o => ({ id: o.id, name: o.customerName })));
-            
-            tbody.innerHTML = orders.map(order => `
-                <tr data-order-id="${order.id}">
-                    <td><strong>#${order.id.slice(0, 8)}</strong><br><small style="font-size: 10px;">${order.id}</small></td>
-                    <td>
-                        <strong>${order.customerName || 'عميل'}</strong><br>
-                        <small>📞 ${order.customerPhone || 'غير متوفر'}</small>
-                    </td>
-                    <td>${order.items.map(item => `${item.image} ${item.name}<br><small>(${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})</small>`).join('<br>')}</td>
-                    <td><strong>${order.total} ج.م</strong></td>
-                    <td>
-                        <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 5px; border-radius: 5px;">
-                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ قيد المعالجة</option>
-                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
-                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
-                        </select>
-                     </td>
-                    <td>${order.paymentMethod || 'نقدي'}</td>
-                    <td>${new Date(order.date).toLocaleDateString('ar-EG')}<br><small>${new Date(order.date).toLocaleTimeString('ar-EG')}</small></td>
-                    <td>
-                        <button class="delete-btn" onclick="deleteOrder('${order.id}')">🗑️ حذف</button>
-                     </td>
-                </tr>
-            `).join('');
-        }
-        
-        async function updateOrderStatus(orderId, status) {
-            console.log('🔧 محاولة تحديث الطلب:', orderId, 'الحالة:', status);
-            
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('❌ يرجى تسجيل الدخول مرة أخرى');
-                window.location.href = '/login';
-                return;
-            }
-            
-            const select = event.target;
-            const originalText = select.value;
-            select.disabled = true;
-            
-            try {
-                const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ status: status })
-                });
-                
-                console.log('📡 استجابة الخادم:', response.status);
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('✅ نجاح:', result);
-                    alert('✅ تم تحديث حالة الطلب بنجاح');
-                    await loadDashboard();
-                } else {
-                    const error = await response.json();
-                    console.error('❌ فشل:', error);
-                    alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
-                    select.value = originalText;
-                }
-            } catch (error) {
-                console.error('❌ خطأ:', error);
-                alert('❌ حدث خطأ في الاتصال بالخادم');
-                select.value = originalText;
-            } finally {
-                select.disabled = false;
-            }
-        }
-        
-        async function deleteOrder(orderId) {
-            console.log('🗑️ محاولة حذف الطلب:', orderId);
-            
-            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الطلب؟')) return;
-            
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('❌ يرجى تسجيل الدخول مرة أخرى');
-                window.location.href = '/login';
-                return;
-            }
-            
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = '⏳ جاري...';
-            button.disabled = true;
-            
-            try {
-                const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                console.log('📡 استجابة الخادم:', response.status);
-                
-                if (response.ok) {
-                    console.log('✅ تم الحذف بنجاح');
-                    alert('✅ تم حذف الطلب بنجاح');
-                    await loadDashboard();
-                } else {
-                    const error = await response.json();
-                    console.error('❌ فشل الحذف:', error);
-                    alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
-                }
-            } catch (error) {
-                console.error('❌ خطأ:', error);
-                alert('❌ حدث خطأ في الاتصال بالخادم');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
-        }
-        
-        function updateStats(orders) {
-            const totalOrders = orders.length;
-            const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
-            let buyOrders = 0;
-            let rentOrders = 0;
-            
-            orders.forEach(order => {
-                if (order.items) {
-                    buyOrders += order.items.filter(item => item.type === 'buy').length;
-                    rentOrders += order.items.filter(item => item.type === 'rent').length;
-                }
-            });
-            
-            animateNumber('totalOrders', totalOrders);
-            animateNumber('totalRevenue', totalRevenue, ' ج.م');
-            animateNumber('buyOrders', buyOrders);
-            animateNumber('rentOrders', rentOrders);
-        }
-        
-        function animateNumber(elementId, targetValue, suffix = '') {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-            
-            const currentValue = parseInt(element.innerText) || 0;
-            if (currentValue === targetValue) return;
-            
-            let start = currentValue;
-            const duration = 500;
-            const stepTime = 20;
-            const steps = duration / stepTime;
-            const increment = (targetValue - start) / steps;
-            let currentStep = 0;
-            
-            const timer = setInterval(() => {
-                currentStep++;
-                const newValue = Math.round(start + (increment * currentStep));
-                if (currentStep >= steps) {
-                    element.innerText = targetValue + suffix;
-                    clearInterval(timer);
-                } else {
-                    element.innerText = newValue + suffix;
-                }
-            }, stepTime);
-        }
-        
-        function updateLastUpdateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('ar-EG');
-            document.getElementById('lastUpdateTime').innerHTML = `🕐 آخر تحديث: ${timeString}`;
-        }
-        
-        function forceRefresh() {
-            loadDashboard();
-        }
-        
-        function logout() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-        }
-        
-        function startAutoRefresh() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
-            refreshInterval = setInterval(() => {
-                loadDashboard();
-            }, 3000);
-        }
-        
-        (async () => {
-            const isAuth = await checkAuth();
-            if (isAuth) {
-                await loadDashboard();
-                startAutoRefresh();
-            }
-        })();
-    </script>
+<body>
+
+<div class="dashboard-header">
+
+<div class="logo-box">
+
+<img
+src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
+
+<div>
+<h1>📊 لوحة تحكم ملوك النزاهة</h1>
+</div>
+
+</div>
+
+<div class="header-actions">
+
+<div class="auto-refresh">
+🔄 تحديث تلقائي كل 3 ثواني
+</div>
+
+<button
+class="refresh-btn"
+onclick="forceRefresh()">
+🔄 تحديث يدوي
+</button>
+
+<button
+class="logout-btn"
+onclick="logout()">
+🚪 تسجيل خروج
+</button>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="stats">
+
+<div class="stat-card">
+<div class="stat-label">
+📦 إجمالي الطلبات
+</div>
+<div class="stat-number"
+id="totalOrders">
+0
+</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">
+💰 إجمالي الإيرادات
+</div>
+<div class="stat-number"
+id="totalRevenue">
+0 ج.م
+</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">
+🛒 طلبات الشراء
+</div>
+<div class="stat-number"
+id="buyOrders">
+0
+</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">
+📅 طلبات الإيجار
+</div>
+<div class="stat-number"
+id="rentOrders">
+0
+</div>
+</div>
+
+</div>
+
+<div class="orders-section">
+
+<h2>
+
+📋 قائمة الطلبات
+
+<span
+class="last-update"
+id="lastUpdateTime">
+</span>
+
+</h2>
+
+<div class="orders-table">
+
+<table id="ordersTable">
+
+<thead>
+
+<tr>
+
+<th>رقم الطلب</th>
+<th>العميل</th>
+<th>المنتجات</th>
+<th>الإجمالي</th>
+<th>الحالة</th>
+<th>طريقة الدفع</th>
+<th>التاريخ</th>
+<th>إجراءات</th>
+
+</tr>
+
+</thead>
+
+<tbody id="ordersBody">
+
+<tr>
+
+<td colspan="8"
+class="loading">
+
+⏳ جاري التحميل...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL = window.location.origin;
+
+let refreshInterval = null;
+
+let isUpdating = false;
+
+async function checkAuth() {
+
+const token = localStorage.getItem('token');
+
+if (!token) {
+
+window.location.href = '/login';
+
+return false;
+
+}
+
+try {
+
+const response = await fetch(`${API_URL}/api/verify-token`, {
+
+method: 'POST',
+
+headers: {
+'Authorization': `Bearer ${token}`
+}
+
+});
+
+if (!response.ok) {
+
+localStorage.removeItem('token');
+
+window.location.href = '/login';
+
+return false;
+
+}
+
+return true;
+
+} catch (error) {
+
+console.error('Auth error:', error);
+
+return false;
+
+}
+
+}
+
+async function loadDashboard() {
+
+if (isUpdating) return;
+
+isUpdating = true;
+
+const token = localStorage.getItem('token');
+
+if (!token) return;
+
+try {
+
+const ordersBody =
+document.getElementById('ordersBody');
+
+ordersBody.classList.add('updating');
+
+const response =
+await fetch(`${API_URL}/api/orders`, {
+
+headers: {
+'Authorization': `Bearer ${token}`
+}
+
+});
+
+if (response.ok) {
+
+const orders = await response.json();
+
+displayOrders(orders);
+
+updateStats(orders);
+
+updateLastUpdateTime();
+
+}
+
+setTimeout(() => {
+
+ordersBody.classList.remove('updating');
+
+}, 300);
+
+} catch (error) {
+
+console.error('Error loading dashboard:', error);
+
+} finally {
+
+isUpdating = false;
+
+}
+
+}
+
+function displayOrders(orders) {
+
+const tbody =
+document.getElementById('ordersBody');
+
+if (!orders || orders.length === 0) {
+
+tbody.innerHTML =
+'<tr><td colspan="8" style="text-align:center;">📭 لا توجد طلبات حتى الآن</td></tr>';
+
+return;
+
+}
+
+tbody.innerHTML = orders.map(order => `
+
+<tr data-order-id="${order.id}">
+
+<td>
+<strong>#${order.id.slice(0,8)}</strong>
+</td>
+
+<td>
+<strong>${order.customerName || 'عميل'}</strong><br>
+📞 ${order.customerPhone || 'غير متوفر'}
+</td>
+
+<td>
+
+${order.items.map(item => `
+
+${item.image} ${item.name}
+<br>
+<small>
+(${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})
+</small>
+
+`).join('<br>')}
+
+</td>
+
+<td>
+<strong>${order.total} ج.م</strong>
+</td>
+
+<td>
+
+<select onchange="updateOrderStatus('${order.id}', this.value)">
+
+<option value="pending"
+${order.status === 'pending' ? 'selected' : ''}>
+⏳ قيد المعالجة
+</option>
+
+<option value="completed"
+${order.status === 'completed' ? 'selected' : ''}>
+✅ مكتمل
+</option>
+
+<option value="cancelled"
+${order.status === 'cancelled' ? 'selected' : ''}>
+❌ ملغي
+</option>
+
+</select>
+
+</td>
+
+<td>
+${order.paymentMethod || 'نقدي'}
+</td>
+
+<td>
+
+${new Date(order.date).toLocaleDateString('ar-EG')}
+
+<br>
+
+<small>
+${new Date(order.date).toLocaleTimeString('ar-EG')}
+</small>
+
+</td>
+
+<td>
+
+<button
+class="delete-btn"
+onclick="deleteOrder('${order.id}')">
+
+🗑️ حذف
+
+</button>
+
+</td>
+
+</tr>
+
+`).join('');
+
+}
+
+async function updateOrderStatus(orderId, status) {
+
+const token = localStorage.getItem('token');
+
+try {
+
+const response =
+await fetch(`${API_URL}/api/orders/${orderId}`, {
+
+method:'PUT',
+
+headers:{
+'Content-Type':'application/json',
+'Authorization':`Bearer ${token}`
+},
+
+body:JSON.stringify({ status })
+
+});
+
+if(response.ok){
+
+alert('✅ تم تحديث الحالة');
+
+await loadDashboard();
+
+}else{
+
+alert('❌ حدث خطأ');
+
+}
+
+}catch(error){
+
+alert('❌ فشل الاتصال بالخادم');
+
+}
+
+}
+
+async function deleteOrder(orderId) {
+
+if(!confirm('⚠️ هل تريد حذف الطلب؟')) return;
+
+const token = localStorage.getItem('token');
+
+try{
+
+const response =
+await fetch(`${API_URL}/api/orders/${orderId}`, {
+
+method:'DELETE',
+
+headers:{
+'Authorization':`Bearer ${token}`
+}
+
+});
+
+if(response.ok){
+
+alert('✅ تم حذف الطلب');
+
+await loadDashboard();
+
+}else{
+
+alert('❌ حدث خطأ');
+
+}
+
+}catch(error){
+
+alert('❌ فشل الاتصال بالخادم');
+
+}
+
+}
+
+function updateStats(orders){
+
+const totalOrders = orders.length;
+
+const totalRevenue =
+orders.reduce((sum,order)=>
+sum + (order.total || 0),0);
+
+let buyOrders = 0;
+
+let rentOrders = 0;
+
+orders.forEach(order => {
+
+if(order.items){
+
+buyOrders +=
+order.items.filter(item =>
+item.type === 'buy').length;
+
+rentOrders +=
+order.items.filter(item =>
+item.type === 'rent').length;
+
+}
+
+});
+
+document.getElementById('totalOrders')
+.innerText = totalOrders;
+
+document.getElementById('totalRevenue')
+.innerText = totalRevenue + ' ج.م';
+
+document.getElementById('buyOrders')
+.innerText = buyOrders;
+
+document.getElementById('rentOrders')
+.innerText = rentOrders;
+
+}
+
+function updateLastUpdateTime(){
+
+const now = new Date();
+
+document.getElementById('lastUpdateTime')
+.innerHTML =
+`🕐 آخر تحديث: ${now.toLocaleTimeString('ar-EG')}`;
+
+}
+
+function forceRefresh(){
+loadDashboard();
+}
+
+function logout(){
+
+if(refreshInterval){
+
+clearInterval(refreshInterval);
+
+}
+
+localStorage.removeItem('token');
+
+window.location.href='/login';
+
+}
+
+function startAutoRefresh(){
+
+if(refreshInterval){
+
+clearInterval(refreshInterval);
+
+}
+
+refreshInterval = setInterval(() => {
+
+loadDashboard();
+
+},3000);
+
+}
+
+(async () => {
+
+const isAuth = await checkAuth();
+
+if(isAuth){
+
+await loadDashboard();
+
+startAutoRefresh();
+
+}
+
+})();
+
+</script>
+
 </body>
 </html>
