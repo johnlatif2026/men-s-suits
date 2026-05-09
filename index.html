@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر البدل الكلاسيكية - الرئيسية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .rent-price {
+            color: #ff9800;
+            font-size: 14px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-buy {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-buy:hover {
+            background: #5a67d8;
+        }
+
+        .btn-rent {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-rent:hover {
+            background: #f57c00;
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .close {
+            float: left;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>🕴️ متجر البدل الكلاسيكية</h1>
+                <p>أناقة راقية - إيجار وبيع</p>
+            </div>
+            <div class="cart-icon" onclick="showCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </header>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>سلة المشتريات</h2>
+            <div id="cartItems"></div>
+            <div class="total-price" id="totalPrice"></div>
+            <button class="btn-buy" onclick="checkout()" style="width: 100%;">إتمام الشراء</button>
+        </div>
+    </div>
+
+    <script>
+        // المنتجات
+        const products = [
+            { id: 1, name: 'بدلة كلاسيك سوداء', price: 1200, rentPrice: 300, image: '👔', category: 'suit' },
+            { id: 2, name: 'بدلة رمادي فاتح', price: 1500, rentPrice: 350, image: '👔', category: 'suit' },
+            { id: 3, name: 'بنطلون كلاسيك أسود', price: 350, rentPrice: 100, image: '👖', category: 'pants' },
+            { id: 4, name: 'بنطلون بيج', price: 400, rentPrice: 120, image: '👖', category: 'pants' },
+            { id: 5, name: 'قميص أبيض كلاسيك', price: 250, rentPrice: 80, image: '👕', category: 'shirt' },
+            { id: 6, name: 'قميص أزرق', price: 280, rentPrice: 90, image: '👕', category: 'shirt' },
+            { id: 7, name: 'حزام جلدي', price: 150, rentPrice: 50, image: '💼', category: 'belt' },
+            { id: 8, name: 'جزمة جلد لامع', price: 500, rentPrice: 150, image: '👞', category: 'shoe' }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function addToCart(productId, type) {
+            const product = products.find(p => p.id === productId);
+            const price = type === 'rent' ? product.rentPrice : product.price;
+            const existingItem = cart.find(item => item.productId === productId && item.type === type);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    productId: productId,
+                    name: product.name,
+                    price: price,
+                    type: type,
+                    quantity: 1,
+                    image: product.image
+                });
+            }
+            saveCart();
+            alert(`تمت إضافة ${product.name} (${type === 'rent' ? 'إيجار' : 'شراء'}) إلى السلة`);
+        }
+
+        function showCart() {
+            const cartModal = document.getElementById('cartModal');
+            const cartItemsDiv = document.getElementById('cartItems');
+            const totalPriceDiv = document.getElementById('totalPrice');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p>السلة فارغة</p>';
+                totalPriceDiv.innerHTML = '';
+            } else {
+                cartItemsDiv.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <span>${item.image} ${item.name} (${item.type === 'rent' ? 'إيجار' : 'شراء'})</span>
+                        <span>${item.quantity} × ${item.price} ج.م = ${item.quantity * item.price} ج.م</span>
+                        <button onclick="removeFromCart(${item.productId}, '${item.type}')">إزالة</button>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPriceDiv.innerHTML = `الإجمالي: ${total} ج.م`;
+            }
+            
+            cartModal.style.display = 'flex';
+        }
+
+        function removeFromCart(productId, type) {
+            cart = cart.filter(item => !(item.productId === productId && item.type === type));
+            saveCart();
+            showCart();
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('السلة فارغة');
+                return;
+            }
+            
+            // حفظ بيانات السلة للتوجه للدفع
+            localStorage.setItem('checkoutCart', JSON.stringify(cart));
+            window.location.href = '/pay';
+        }
+
+        // عرض المنتجات
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.image}</div>
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">${product.price} ج.م</div>
+                        <div class="rent-price">إيجار: ${product.rentPrice} ج.م/يوم</div>
+                        <div class="product-actions">
+                            <button class="btn-buy" onclick="addToCart(${product.id}, 'buy')">شراء</button>
+                            <button class="btn-rent" onclick="addToCart(${product.id}, 'rent')">إيجار</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        displayProducts();
+        updateCartCount();
+    </script>
+</body>
+</html>
