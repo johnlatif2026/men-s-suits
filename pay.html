@@ -287,56 +287,56 @@
         
         document.getElementById('grandTotal').innerHTML = `${grandTotal} ج.م`;
         
-        async function processPayment() {
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
-            
-            if (!customerName || !customerPhone) {
-                alert('❌ يرجى إدخال جميع بيانات العميل');
-                return;
-            }
-            
-            if (customerPhone.length < 10) {
-                alert('❌ يرجى إدخال رقم هاتف صحيح');
-                return;
-            }
-            
-            const order = {
-                id: Date.now().toString(),
-                customerName: customerName,
-                customerPhone: customerPhone,
-                items: cart,
-                total: grandTotal,
-                date: new Date().toISOString(),
-                paymentMethod: 'نقدي عند الاستلام',
-                status: 'pending'
-            };
-            
-            try {
-                // حفظ الطلب في Firebase عبر الخادم
-                const response = await fetch(`${API_URL}/api/orders`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(order)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    alert('✅ تم تأكيد طلبك بنجاح! سيتم إشعارك عند التجهيز');
-                    localStorage.removeItem('checkoutCart');
-                    localStorage.removeItem('cart');
-                    window.location.href = '/';
-                } else {
-                    const error = await response.json();
-                    alert('❌ حدث خطأ في حفظ الطلب: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
-                }
-            } catch (error) {
-                console.error('Error saving order:', error);
-                alert('❌ حدث خطأ في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت');
-            }
+async function processPayment() {
+    const customerName = document.getElementById('customerName').value;
+    const customerPhone = document.getElementById('customerPhone').value;
+    
+    if (!customerName || !customerPhone) {
+        alert('❌ يرجى إدخال جميع بيانات العميل');
+        return;
+    }
+    
+    if (customerPhone.length < 10) {
+        alert('❌ يرجى إدخال رقم هاتف صحيح');
+        return;
+    }
+    
+    // إزالة الـ id هنا - let Firebase generat it
+    const order = {
+        // لا نضع id هنا! Firebase سينشئه تلقائياً
+        customerName: customerName,
+        customerPhone: customerPhone,
+        items: cart,
+        total: grandTotal,
+        date: new Date().toISOString(),
+        paymentMethod: 'نقدي عند الاستلام',
+        status: 'pending'
+    };
+    
+    try {
+        const response = await fetch(`${API_URL}/api/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert('✅ تم تأكيد طلبك بنجاح! رقم الطلب: #' + result.order.id.slice(0, 8));
+            localStorage.removeItem('checkoutCart');
+            localStorage.removeItem('cart');
+            window.location.href = '/';
+        } else {
+            const error = await response.json();
+            alert('❌ حدث خطأ في حفظ الطلب: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
         }
+    } catch (error) {
+        console.error('Error saving order:', error);
+        alert('❌ حدث خطأ في الاتصال بالخادم');
+    }
+}
     </script>
 </body>
 </html>
