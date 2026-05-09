@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Tahoma', 'Arial', sans-serif;
-            background: #f0f0f0;
+            background: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,11 +23,23 @@
 
         .invoice {
             background: white;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             overflow: hidden;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .invoice-header {
@@ -38,7 +50,7 @@
         }
 
         .invoice-header h1 {
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 10px;
         }
 
@@ -52,11 +64,18 @@
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .info-box h3 {
             color: #667eea;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #666;
+            font-size: 16px;
         }
 
         .items-table {
@@ -73,56 +92,66 @@
         .items-table th {
             background: #f8f9fa;
             color: #333;
+            font-weight: bold;
         }
 
         .total-section {
             text-align: left;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             margin-top: 20px;
             padding-top: 20px;
             border-top: 2px solid #f0f0f0;
+            color: #667eea;
         }
 
         .payment-form {
             margin-top: 30px;
-            padding: 20px;
+            padding: 25px;
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 15px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #666;
+            font-weight: bold;
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
         .btn-pay {
             width: 100%;
             padding: 15px;
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
+            transition: transform 0.3s;
         }
 
         .btn-pay:hover {
-            background: #218838;
+            transform: translateY(-2px);
         }
 
         .invoice-footer {
@@ -142,6 +171,21 @@
                 box-shadow: none;
             }
         }
+
+        @media (max-width: 768px) {
+            .invoice-body {
+                padding: 20px;
+            }
+            
+            .items-table th, .items-table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+            
+            .total-section {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -154,16 +198,16 @@
         <div class="invoice-body">
             <div class="invoice-info">
                 <div class="info-box">
-                    <h3>رقم الفاتورة</h3>
+                    <h3>📄 رقم الفاتورة</h3>
                     <p id="invoiceNumber">#INV-001</p>
                 </div>
                 <div class="info-box">
-                    <h3>التاريخ</h3>
+                    <h3>📅 التاريخ</h3>
                     <p id="invoiceDate"></p>
                 </div>
                 <div class="info-box">
-                    <h3>العميل</h3>
-                    <p>عميل متجر</p>
+                    <h3>⏰ الوقت</h3>
+                    <p id="invoiceTime"></p>
                 </div>
             </div>
             
@@ -181,44 +225,46 @@
             </table>
             
             <div class="total-section">
-                <span>الإجمالي النهائي: </span>
+                <span>💰 الإجمالي النهائي: </span>
                 <span id="grandTotal">0 ج.م</span>
             </div>
             
             <div class="payment-form no-print">
-                <h3>معلومات الدفع</h3>
+                <h3>📝 معلومات العميل</h3>
                 <div class="form-group">
-                    <label>اسم العميل</label>
-                    <input type="text" id="customerName" placeholder="أدخل اسمك">
+                    <label>👤 اسم العميل</label>
+                    <input type="text" id="customerName" placeholder="أدخل اسمك الكامل" required>
                 </div>
                 <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="tel" id="customerPhone" placeholder="أدخل رقم الهاتف">
+                    <label>📞 رقم الهاتف</label>
+                    <input type="tel" id="customerPhone" placeholder="أدخل رقم الهاتف للتواصل" required>
                 </div>
-                <button class="btn-pay" onclick="processPayment()">تأكيد الدفع وإنهاء الطلب</button>
+                <button class="btn-pay" onclick="processPayment()">✅ تأكيد الطلب وإتمام الشراء</button>
             </div>
         </div>
         
         <div class="invoice-footer">
             <p>شكراً لتسوقكم معنا - مع خالص التقدير، متجر البدل الكلاسيكية</p>
-            <p>هذه الفاتورة تعتبر إثبات شراء صالح</p>
+            <p>سيتم التواصل معكم خلال 24 ساعة لتأكيد الطلب</p>
         </div>
     </div>
 
     <script>
-        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const API_URL = window.location.origin;
         
         // التحقق من وجود سلة مشتريات
         const cart = JSON.parse(localStorage.getItem('checkoutCart'));
         
         if (!cart || cart.length === 0) {
-            alert('لا توجد منتجات للدفع. سيتم تحويلك للصفحة الرئيسية');
+            alert('⚠️ لا توجد منتجات للدفع. سيتم تحويلك للصفحة الرئيسية');
             window.location.href = '/';
         }
         
-        // توليد رقم فاتورة عشوائي
-        document.getElementById('invoiceNumber').innerText = `#INV-${Date.now()}`;
-        document.getElementById('invoiceDate').innerText = new Date().toLocaleDateString('ar-EG');
+        // توليد رقم فاتورة
+        const now = new Date();
+        document.getElementById('invoiceNumber').innerHTML = `#INV-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}`;
+        document.getElementById('invoiceDate').innerText = now.toLocaleDateString('ar-EG');
+        document.getElementById('invoiceTime').innerText = now.toLocaleTimeString('ar-EG');
         
         // عرض المنتجات في الفاتورة
         const invoiceItems = document.getElementById('invoiceItems');
@@ -231,10 +277,10 @@
             invoiceItems.innerHTML += `
                 <tr>
                     <td>${item.image} ${item.name}</td>
-                    <td>${item.type === 'rent' ? 'إيجار' : 'شراء'}</td>
+                    <td>${item.type === 'rent' ? '📅 إيجار' : '🛒 شراء'}</td>
                     <td>${item.quantity}</td>
                     <td>${item.price} ج.م</td>
-                    <td>${total} ج.م</td>
+                    <td><strong>${total} ج.م</strong></td>
                 </tr>
             `;
         });
@@ -246,22 +292,28 @@
             const customerPhone = document.getElementById('customerPhone').value;
             
             if (!customerName || !customerPhone) {
-                alert('يرجى إدخال جميع بيانات العميل');
+                alert('❌ يرجى إدخال جميع بيانات العميل');
+                return;
+            }
+            
+            if (customerPhone.length < 10) {
+                alert('❌ يرجى إدخال رقم هاتف صحيح');
                 return;
             }
             
             const order = {
-                id: Date.now(),
+                id: Date.now().toString(),
                 customerName: customerName,
                 customerPhone: customerPhone,
                 items: cart,
                 total: grandTotal,
                 date: new Date().toISOString(),
-                paymentMethod: 'نقدي عند الاستلام'
+                paymentMethod: 'نقدي عند الاستلام',
+                status: 'pending'
             };
             
             try {
-                // حفظ الطلب في الخادم
+                // حفظ الطلب في Firebase عبر الخادم
                 const response = await fetch(`${API_URL}/api/orders`, {
                     method: 'POST',
                     headers: {
@@ -271,16 +323,18 @@
                 });
                 
                 if (response.ok) {
-                    alert('تم تأكيد طلبك بنجاح! شكراً للتسوق معنا');
+                    const result = await response.json();
+                    alert('✅ تم تأكيد طلبك بنجاح! سيتم إشعارك عند التجهيز');
                     localStorage.removeItem('checkoutCart');
                     localStorage.removeItem('cart');
                     window.location.href = '/';
                 } else {
-                    alert('حدث خطأ في حفظ الطلب. يرجى المحاولة مرة أخرى');
+                    const error = await response.json();
+                    alert('❌ حدث خطأ في حفظ الطلب: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
                 }
             } catch (error) {
                 console.error('Error saving order:', error);
-                alert('حدث خطأ في الاتصال بالخادم');
+                alert('❌ حدث خطأ في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت');
             }
         }
     </script>
