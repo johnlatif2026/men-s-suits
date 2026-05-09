@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - مدير المتجر</title>
+    <title>لوحة التحكم - ملوك النزاهة</title>
     <style>
         * {
             margin: 0;
@@ -202,29 +202,6 @@
             color: #666;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status-pending {
-            background: #ffc107;
-            color: #856404;
-        }
-
-        .status-completed {
-            background: #28a745;
-            color: white;
-        }
-
-        .status-cancelled {
-            background: #dc3545;
-            color: white;
-        }
-
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -354,7 +331,6 @@
             if (!token) return;
             
             try {
-                // إضافة تأثير تحديث
                 const ordersBody = document.getElementById('ordersBody');
                 ordersBody.classList.add('updating');
                 
@@ -382,41 +358,43 @@
         }
         
         function displayOrders(orders) {
-    const tbody = document.getElementById('ordersBody');
-    
-    if (!orders || orders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">📭 لا توجد طلبات حتى الآن</td></tr>';
-        return;
-    }
-    
-    console.log('📋 عرض الطلبات:', orders.map(o => ({ id: o.id, name: o.customerName })));
-    
-    tbody.innerHTML = orders.map(order => `
-        <tr data-order-id="${order.id}">
-            <td><strong>#${order.id.slice(0, 8)}</strong><br><small style="font-size: 10px;">${order.id}</small></td>
-            <td>
-                <strong>${order.customerName || 'عميل'}</strong><br>
-                <small>📞 ${order.customerPhone || 'غير متوفر'}</small>
-            </td>
-            <td>${order.items.map(item => `${item.image} ${item.name}<br><small>(${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})</small>`).join('<br>')}</td>
-            <td><strong>${order.total} ج.م</strong></td>
-            <td>
-                <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 5px; border-radius: 5px;">
-                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ قيد المعالجة</option>
-                    <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
-                    <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
-                </select>
-            </td>
-            <td>${order.paymentMethod || 'نقدي'}</td>
-            <td>${new Date(order.date).toLocaleDateString('ar-EG')}<br><small>${new Date(order.date).toLocaleTimeString('ar-EG')}</small></td>
-            <td>
-                <button class="delete-btn" onclick="deleteOrder('${order.id}')">🗑️ حذف</button>
-            </td>
-        </tr>
-    `).join('');
-}
+            const tbody = document.getElementById('ordersBody');
+            
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">📭 لا توجد طلبات حتى الآن</td></tr>';
+                return;
+            }
+            
+            console.log('📋 عرض الطلبات:', orders.map(o => ({ id: o.id, name: o.customerName })));
+            
+            tbody.innerHTML = orders.map(order => `
+                <tr data-order-id="${order.id}">
+                    <td><strong>#${order.id.slice(0, 8)}</strong><br><small style="font-size: 10px;">${order.id}</small></td>
+                    <td>
+                        <strong>${order.customerName || 'عميل'}</strong><br>
+                        <small>📞 ${order.customerPhone || 'غير متوفر'}</small>
+                    </td>
+                    <td>${order.items.map(item => `${item.image} ${item.name}<br><small>(${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})</small>`).join('<br>')}</td>
+                    <td><strong>${order.total} ج.م</strong></td>
+                    <td>
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 5px; border-radius: 5px;">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ قيد المعالجة</option>
+                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
+                        </select>
+                     </td>
+                    <td>${order.paymentMethod || 'نقدي'}</td>
+                    <td>${new Date(order.date).toLocaleDateString('ar-EG')}<br><small>${new Date(order.date).toLocaleTimeString('ar-EG')}</small></td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteOrder('${order.id}')">🗑️ حذف</button>
+                     </td>
+                </tr>
+            `).join('');
+        }
         
         async function updateOrderStatus(orderId, status) {
+            console.log('🔧 محاولة تحديث الطلب:', orderId, 'الحالة:', status);
+            
             const token = localStorage.getItem('token');
             if (!token) {
                 alert('❌ يرجى تسجيل الدخول مرة أخرى');
@@ -424,7 +402,6 @@
                 return;
             }
             
-            // تعطيل الـ select مؤقتاً
             const select = event.target;
             const originalText = select.value;
             select.disabled = true;
@@ -439,18 +416,21 @@
                     body: JSON.stringify({ status: status })
                 });
                 
+                console.log('📡 استجابة الخادم:', response.status);
+                
                 if (response.ok) {
                     const result = await response.json();
+                    console.log('✅ نجاح:', result);
                     alert('✅ تم تحديث حالة الطلب بنجاح');
-                    // إعادة تحميل البيانات
                     await loadDashboard();
                 } else {
                     const error = await response.json();
-                    alert('❌ حدث خطأ في تحديث الحالة: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
+                    console.error('❌ فشل:', error);
+                    alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
                     select.value = originalText;
                 }
             } catch (error) {
-                console.error('Error updating order:', error);
+                console.error('❌ خطأ:', error);
                 alert('❌ حدث خطأ في الاتصال بالخادم');
                 select.value = originalText;
             } finally {
@@ -459,103 +439,49 @@
         }
         
         async function deleteOrder(orderId) {
-            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع!')) return;
+            console.log('🗑️ محاولة حذف الطلب:', orderId);
+            
+            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الطلب؟')) return;
             
             const token = localStorage.getItem('token');
             if (!token) {
                 alert('❌ يرجى تسجيل الدخول مرة أخرى');
                 window.location.href = '/login';
                 return;
-async function updateOrderStatus(orderId, status) {
-    console.log('🔧 محاولة تحديث الطلب:', orderId, 'الحالة:', status);
-    
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('❌ يرجى تسجيل الدخول مرة أخرى');
-        window.location.href = '/login';
-        return;
-    }
-    
-    const select = event.target;
-    const originalText = select.value;
-    select.disabled = true;
-    
-    try {
-        const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ status: status })
-        });
-        
-        console.log('📡 استجابة الخادم:', response.status);
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('✅ نجاح:', result);
-            alert('✅ تم تحديث حالة الطلب بنجاح');
-            await loadDashboard();
-        } else {
-            const error = await response.json();
-            console.error('❌ فشل:', error);
-            alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
-            select.value = originalText;
-        }
-    } catch (error) {
-        console.error('❌ خطأ:', error);
-        alert('❌ حدث خطأ في الاتصال بالخادم');
-        select.value = originalText;
-    } finally {
-        select.disabled = false;
-    }
-}
-
-async function deleteOrder(orderId) {
-    console.log('🗑️ محاولة حذف الطلب:', orderId);
-    
-    if (!confirm('⚠️ هل أنت متأكد من حذف هذا الطلب؟')) return;
-    
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('❌ يرجى تسجيل الدخول مرة أخرى');
-        window.location.href = '/login';
-        return;
-    }
-    
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = '⏳ جاري...';
-    button.disabled = true;
-    
-    try {
-        const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
             }
-        });
-        
-        console.log('📡 استجابة الخادم:', response.status);
-        
-        if (response.ok) {
-            console.log('✅ تم الحذف بنجاح');
-            alert('✅ تم حذف الطلب بنجاح');
-            await loadDashboard();
-        } else {
-            const error = await response.json();
-            console.error('❌ فشل الحذف:', error);
-            alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
+            
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ جاري...';
+            button.disabled = true;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                console.log('📡 استجابة الخادم:', response.status);
+                
+                if (response.ok) {
+                    console.log('✅ تم الحذف بنجاح');
+                    alert('✅ تم حذف الطلب بنجاح');
+                    await loadDashboard();
+                } else {
+                    const error = await response.json();
+                    console.error('❌ فشل الحذف:', error);
+                    alert('❌ حدث خطأ: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
+                }
+            } catch (error) {
+                console.error('❌ خطأ:', error);
+                alert('❌ حدث خطأ في الاتصال بالخادم');
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+            }
         }
-    } catch (error) {
-        console.error('❌ خطأ:', error);
-        alert('❌ حدث خطأ في الاتصال بالخادم');
-    } finally {
-        button.textContent = originalText;
-        button.disabled = false;
-    }
-}
         
         function updateStats(orders) {
             const totalOrders = orders.length;
@@ -570,7 +496,6 @@ async function deleteOrder(orderId) {
                 }
             });
             
-            // تأثير حركي على الأرقام
             animateNumber('totalOrders', totalOrders);
             animateNumber('totalRevenue', totalRevenue, ' ج.م');
             animateNumber('buyOrders', buyOrders);
@@ -621,17 +546,15 @@ async function deleteOrder(orderId) {
             window.location.href = '/login';
         }
         
-        // بدء التحديث التلقائي كل 3 ثواني
         function startAutoRefresh() {
             if (refreshInterval) {
                 clearInterval(refreshInterval);
             }
             refreshInterval = setInterval(() => {
                 loadDashboard();
-            }, 3000); // 3 ثواني
+            }, 3000);
         }
         
-        // تهيئة الصفحة
         (async () => {
             const isAuth = await checkAuth();
             if (isAuth) {
