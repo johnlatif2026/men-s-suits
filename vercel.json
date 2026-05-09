@@ -35,8 +35,5 @@
       "src": "/pay",
       "dest": "/pay.html"
     }
-  ],
-  "env": {
-    "JWT_SECRET": "@jwt_secret"
-  }
+  ]
 }
