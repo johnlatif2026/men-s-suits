@@ -141,17 +141,28 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
 });
 
 // إضافة طلب جديد وإرسال إشعار Telegram
+// إضافة طلب جديد (تعديل مهم)
 app.post('/api/orders', async (req, res) => {
   try {
     const order = req.body;
     order.orderDate = new Date().toISOString();
     order.status = 'pending';
     
+    // إزالة الـ id اللي جاي من العميل واستخدام id من Firebase
+    delete order.id; // مهم جداً! نمسح الـ id القديم
+    
     // حفظ الطلب في Firebase
     const docRef = await db.collection('orders').add(order);
-    const savedOrder = { id: docRef.id, ...order };
     
-    // إرسال إشعار Telegram لجميع الـ Chat IDs
+    // الحصول على الـ ID الحقيقي من Firebase
+    const savedOrder = { 
+      id: docRef.id,  // هذا هو الـ ID الحقيقي
+      ...order 
+    };
+    
+    console.log(`✅ تم حفظ طلب جديد بالرقم: ${savedOrder.id}`);
+    
+    // إرسال إشعار Telegram
     const message = formatOrderMessage(savedOrder);
     await sendTelegramMessage(message);
     
@@ -160,18 +171,28 @@ app.post('/api/orders', async (req, res) => {
       order: savedOrder 
     });
   } catch (error) {
-    console.error('خطأ في حفظ الطلب:', error);
+    console.error('❌ خطأ في حفظ الطلب:', error);
     res.status(500).json({ message: 'خطأ في حفظ الطلب', error: error.message });
   }
 });
 
-// تحديث حالة الطلب
+// تحديث حالة الطلب (مع تحسين logging)
 app.put('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const orderId = req.params.id;
     const { status } = req.body;
     
-    console.log(`📝 تحديث الطلب ${orderId} إلى حالة: ${status}`);
+    console.log(`🔍 محاولة تحديث الطلب: ${orderId}`);
+    
+    // التحقق من وجود الطلب أولاً
+    const orderDoc = await db.collection('orders').doc(orderId).get();
+    
+    if (!orderDoc.exists) {
+      console.log(`❌ الطلب ${orderId} غير موجود في Firebase`);
+      return res.status(404).json({ message: 'الطلب غير موجود في قاعدة البيانات' });
+    }
+    
+    console.log(`✅ تم العثور على الطلب: ${orderId}`);
     
     // تحديث في Firebase
     await db.collection('orders').doc(orderId).update({ 
@@ -179,8 +200,6 @@ app.put('/api/orders/:id', authenticateToken, async (req, res) => {
       updatedAt: new Date().toISOString()
     });
     
-    // الحصول على بيانات الطلب لإرسال إشعار
-    const orderDoc = await db.collection('orders').doc(orderId).get();
     const order = orderDoc.data();
     
     // إرسال إشعار تحديث الحالة إلى Telegram
@@ -201,20 +220,23 @@ app.put('/api/orders/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// حذف طلب
+// حذف طلب (مع تحسين logging)
 app.delete('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const orderId = req.params.id;
     
-    console.log(`🗑️ حذف الطلب ${orderId}`);
+    console.log(`🔍 محاولة حذف الطلب: ${orderId}`);
     
-    // الحصول على بيانات الطلب قبل الحذف لإرسال إشعار
+    // التحقق من وجود الطلب أولاً
     const orderDoc = await db.collection('orders').doc(orderId).get();
-    const order = orderDoc.data();
     
-    if (!order) {
-      return res.status(404).json({ message: 'الطلب غير موجود' });
+    if (!orderDoc.exists) {
+      console.log(`❌ الطلب ${orderId} غير موجود في Firebase`);
+      return res.status(404).json({ message: 'الطلب غير موجود في قاعدة البيانات' });
     }
+    
+    console.log(`✅ تم العثور على الطلب: ${orderId}`);
+    const order = orderDoc.data();
     
     // حذف من Firebase
     await db.collection('orders').doc(orderId).delete();
@@ -235,6 +257,26 @@ app.delete('/api/orders/:id', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('❌ خطأ في حذف الطلب:', error);
     res.status(500).json({ message: 'خطأ في حذف الطلب', error: error.message });
+  }
+});
+
+// الحصول على جميع الطلبات (مع تحسين)
+app.get('/api/orders', authenticateToken, async (req, res) => {
+  try {
+    const ordersSnapshot = await db.collection('orders').orderBy('date', 'desc').get();
+    const orders = [];
+    ordersSnapshot.forEach(doc => {
+      orders.push({ 
+        id: doc.id,  // ID من Firebase
+        ...doc.data() 
+      });
+    });
+    
+    console.log(`📊 تم جلب ${orders.length} طلب من Firebase`);
+    res.json(orders);
+  } catch (error) {
+    console.error('❌ خطأ في جلب الطلبات:', error);
+    res.status(500).json({ message: 'خطأ في جلب الطلبات', error: error.message });
   }
 });
 
