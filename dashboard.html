@@ -13,20 +13,44 @@
 
         body {
             font-family: 'Tahoma', 'Arial', sans-serif;
-            background: #f5f5f5;
+            background: #f5f7fa;
         }
 
         .dashboard-header {
             background: white;
-            padding: 20px;
+            padding: 20px 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dashboard-header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -40,14 +64,19 @@
 
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-number {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: bold;
             color: #667eea;
             margin: 10px 0;
@@ -55,13 +84,19 @@
 
         .stat-label {
             color: #666;
+            font-size: 16px;
         }
 
         .orders-section {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .orders-section h2 {
+            margin-bottom: 20px;
+            color: #333;
         }
 
         .orders-table {
@@ -83,28 +118,45 @@
         th {
             background: #f8f9fa;
             color: #333;
+            font-weight: bold;
         }
 
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        select {
+            padding: 6px 10px;
             border-radius: 5px;
+            border: 1px solid #ddd;
             cursor: pointer;
         }
 
-        .logout-btn:hover {
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
             background: #c82333;
         }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
         @media (max-width: 768px) {
-            table {
+            th, td {
                 font-size: 12px;
+                padding: 8px;
             }
             
-            th, td {
-                padding: 8px;
+            .stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -112,31 +164,31 @@
 <body>
     <div class="dashboard-header">
         <h1>📊 لوحة تحكم المتجر</h1>
-        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+        <button class="logout-btn" onclick="logout()">🚪 تسجيل خروج</button>
     </div>
     
     <div class="container">
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-label">إجمالي الطلبات</div>
+                <div class="stat-label">📦 إجمالي الطلبات</div>
                 <div class="stat-number" id="totalOrders">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">إجمالي الإيرادات</div>
+                <div class="stat-label">💰 إجمالي الإيرادات</div>
                 <div class="stat-number" id="totalRevenue">0 ج.م</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">طلبات الشراء</div>
+                <div class="stat-label">🛒 طلبات الشراء</div>
                 <div class="stat-number" id="buyOrders">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">طلبات الإيجار</div>
+                <div class="stat-label">📅 طلبات الإيجار</div>
                 <div class="stat-number" id="rentOrders">0</div>
             </div>
         </div>
         
         <div class="orders-section">
-            <h2>قائمة الطلبات</h2>
+            <h2>📋 قائمة الطلبات</h2>
             <div class="orders-table">
                 <table id="ordersTable">
                     <thead>
@@ -145,13 +197,15 @@
                             <th>العميل</th>
                             <th>المنتجات</th>
                             <th>الإجمالي</th>
-                            <th>نوع الدفع</th>
+                            <th>الحالة</th>
+                            <th>طريقة الدفع</th>
                             <th>التاريخ</th>
+                            <th>إجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="ordersBody">
                         <tr>
-                            <td colspan="6" style="text-align: center;">جاري التحميل...</td>
+                            <td colspan="8" class="loading">⏳ جاري التحميل...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -160,7 +214,7 @@
     </div>
 
     <script>
-        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const API_URL = window.location.origin;
         
         async function checkAuth() {
             const token = localStorage.getItem('token');
@@ -171,6 +225,7 @@
             
             try {
                 const response = await fetch(`${API_URL}/api/verify-token`, {
+                    method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -213,27 +268,88 @@
             const tbody = document.getElementById('ordersBody');
             
             if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد طلبات</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">📭 لا توجد طلبات حتى الآن</td></tr>';
                 return;
             }
             
             tbody.innerHTML = orders.map(order => `
                 <tr>
-                    <td>#${order.id}</td>
-                    <td>${order.customerName || 'عميل'}</td>
-                    <td>${order.items.map(item => `${item.name} (${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})`).join(', ')}</td>
-                    <td>${order.total} ج.م</td>
+                    <td>#${order.id.slice(0, 8)}</td>
+                    <td>
+                        <strong>${order.customerName || 'عميل'}</strong><br>
+                        <small>📞 ${order.customerPhone || 'غير متوفر'}</small>
+                    </td>
+                    <td>${order.items.map(item => `${item.image} ${item.name}<br><small>(${item.type === 'rent' ? 'إيجار' : 'شراء'} ×${item.quantity})</small>`).join('<br>')}</td>
+                    <td><strong>${order.total} ج.م</strong></td>
+                    <td>
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 5px; border-radius: 5px;">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ قيد المعالجة</option>
+                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
+                        </select>
+                    </td>
                     <td>${order.paymentMethod || 'نقدي'}</td>
-                    <td>${new Date(order.date).toLocaleDateString('ar-EG')}</td>
+                    <td>${new Date(order.date).toLocaleDateString('ar-EG')}<br><small>${new Date(order.date).toLocaleTimeString('ar-EG')}</small></td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteOrder('${order.id}')">🗑️ حذف</button>
+                    </td>
                 </tr>
             `).join('');
         }
         
+        async function updateOrderStatus(orderId, status) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status: status })
+                });
+                
+                if (response.ok) {
+                    alert('✅ تم تحديث حالة الطلب بنجاح');
+                    loadDashboard();
+                } else {
+                    alert('❌ حدث خطأ في تحديث الحالة');
+                }
+            } catch (error) {
+                console.error('Error updating order:', error);
+                alert('❌ حدث خطأ في الاتصال بالخادم');
+            }
+        }
+        
+        async function deleteOrder(orderId) {
+            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع!')) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    alert('✅ تم حذف الطلب بنجاح');
+                    loadDashboard();
+                } else {
+                    alert('❌ حدث خطأ في حذف الطلب');
+                }
+            } catch (error) {
+                console.error('Error deleting order:', error);
+                alert('❌ حدث خطأ في الاتصال بالخادم');
+            }
+        }
+        
         function updateStats(orders) {
             const totalOrders = orders.length;
-            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-            const buyOrders = orders.reduce((sum, order) => sum + order.items.filter(item => item.type === 'buy').length, 0);
-            const rentOrders = orders.reduce((sum, order) => sum + order.items.filter(item => item.type === 'rent').length, 0);
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const buyOrders = orders.reduce((sum, order) => sum + (order.items?.filter(item => item.type === 'buy').length || 0), 0);
+            const rentOrders = orders.reduce((sum, order) => sum + (order.items?.filter(item => item.type === 'rent').length || 0), 0);
             
             document.getElementById('totalOrders').innerText = totalOrders;
             document.getElementById('totalRevenue').innerText = `${totalRevenue} ج.م`;
@@ -251,6 +367,8 @@
             const isAuth = await checkAuth();
             if (isAuth) {
                 await loadDashboard();
+                // تحديث كل 30 ثانية
+                setInterval(loadDashboard, 30000);
             }
         })();
     </script>
