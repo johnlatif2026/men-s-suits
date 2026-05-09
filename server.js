@@ -171,16 +171,24 @@ app.put('/api/orders/:id', authenticateToken, async (req, res) => {
     const orderId = req.params.id;
     const { status } = req.body;
     
+    console.log(`📝 تحديث الطلب ${orderId} إلى حالة: ${status}`);
+    
+    // تحديث في Firebase
     await db.collection('orders').doc(orderId).update({ 
       status: status,
       updatedAt: new Date().toISOString()
     });
     
+    // الحصول على بيانات الطلب لإرسال إشعار
+    const orderDoc = await db.collection('orders').doc(orderId).get();
+    const order = orderDoc.data();
+    
     // إرسال إشعار تحديث الحالة إلى Telegram
     const statusMessage = `
 🔄 <b>تحديث حالة طلب</b>
 ━━━━━━━━━━━━━━
-<b>📋 رقم الطلب:</b> #${orderId}
+<b>📋 رقم الطلب:</b> #${orderId.slice(0, 8)}
+<b>👤 العميل:</b> ${order.customerName || 'عميل'}
 <b>📊 الحالة الجديدة:</b> ${status === 'completed' ? '✅ مكتمل' : status === 'cancelled' ? '❌ ملغي' : '⏳ قيد المعالجة'}
 ━━━━━━━━━━━━━━
     `;
@@ -188,8 +196,8 @@ app.put('/api/orders/:id', authenticateToken, async (req, res) => {
     
     res.json({ message: 'تم تحديث حالة الطلب بنجاح' });
   } catch (error) {
-    console.error('خطأ في تحديث الطلب:', error);
-    res.status(500).json({ message: 'خطأ في تحديث الطلب' });
+    console.error('❌ خطأ في تحديث الطلب:', error);
+    res.status(500).json({ message: 'خطأ في تحديث الطلب', error: error.message });
   }
 });
 
@@ -197,11 +205,36 @@ app.put('/api/orders/:id', authenticateToken, async (req, res) => {
 app.delete('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const orderId = req.params.id;
+    
+    console.log(`🗑️ حذف الطلب ${orderId}`);
+    
+    // الحصول على بيانات الطلب قبل الحذف لإرسال إشعار
+    const orderDoc = await db.collection('orders').doc(orderId).get();
+    const order = orderDoc.data();
+    
+    if (!order) {
+      return res.status(404).json({ message: 'الطلب غير موجود' });
+    }
+    
+    // حذف من Firebase
     await db.collection('orders').doc(orderId).delete();
+    
+    // إرسال إشعار حذف إلى Telegram
+    const deleteMessage = `
+🗑️ <b>تم حذف طلب</b>
+━━━━━━━━━━━━━━
+<b>📋 رقم الطلب:</b> #${orderId.slice(0, 8)}
+<b>👤 العميل:</b> ${order.customerName || 'عميل'}
+<b>💰 القيمة:</b> ${order.total || 0} ج.م
+<b>⚠️ ملاحظة:</b> تم حذف هذا الطلب من النظام
+━━━━━━━━━━━━━━
+    `;
+    await sendTelegramMessage(deleteMessage);
+    
     res.json({ message: 'تم حذف الطلب بنجاح' });
   } catch (error) {
-    console.error('خطأ في حذف الطلب:', error);
-    res.status(500).json({ message: 'خطأ في حذف الطلب' });
+    console.error('❌ خطأ في حذف الطلب:', error);
+    res.status(500).json({ message: 'خطأ في حذف الطلب', error: error.message });
   }
 });
 
