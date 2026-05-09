@@ -17,6 +17,10 @@ href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
 <link rel="preconnect"
 href="https://fonts.googleapis.com">
 
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap"
 rel="stylesheet">
 
@@ -29,48 +33,76 @@ rel="stylesheet">
 }
 
 body{
+
     font-family:'Cairo',sans-serif;
+
     min-height:100vh;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     overflow:hidden;
+
     position:relative;
+
     background:
     linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+
+    padding:20px;
+
 }
 
 /* خلفيات ديكورية */
 
 body::before{
+
     content:'';
+
     position:absolute;
+
     width:700px;
     height:700px;
+
     background:rgba(255,255,255,.08);
+
     border-radius:50%;
+
     top:-250px;
     left:-250px;
+
 }
 
 body::after{
+
     content:'';
+
     position:absolute;
+
     width:500px;
     height:500px;
+
     background:rgba(255,255,255,.05);
+
     border-radius:50%;
+
     bottom:-200px;
     right:-200px;
+
 }
 
-/* صندوق تسجيل الدخول */
+/* الكونتينر */
 
 .login-container{
+
     position:relative;
+
     z-index:10;
 
-    width:90%;
+    width:100%;
+
     max-width:430px;
 
     background:rgba(255,255,255,.15);
@@ -79,14 +111,17 @@ body::after{
 
     border:1px solid rgba(255,255,255,.2);
 
-    border-radius:35px;
+    border-radius:30px;
 
     padding:40px 30px;
 
     box-shadow:0 20px 60px rgba(0,0,0,.25);
 
     animation:fadeIn .6s ease;
+
 }
+
+/* الانيميشن */
 
 @keyframes fadeIn{
 
@@ -118,38 +153,52 @@ body::after{
 
     object-fit:cover;
 
-    border:5px solid rgba(255,255,255,.4);
-
-    margin-bottom:15px;
+    border:5px solid rgba(255,255,255,.3);
 
     box-shadow:0 10px 25px rgba(0,0,0,.2);
+
+    margin-bottom:15px;
 
 }
 
 .logo-box h1{
+
     color:white;
+
     font-size:34px;
-    margin-bottom:8px;
+
     font-weight:800;
+
+    margin-bottom:8px;
+
 }
 
 .logo-box p{
+
     color:rgba(255,255,255,.85);
+
     font-size:15px;
+
 }
 
-/* الحقول */
+/* الفورم */
 
 .input-group{
     margin-bottom:22px;
 }
 
 label{
+
     display:block;
+
     margin-bottom:10px;
+
     color:white;
-    font-weight:700;
+
     font-size:15px;
+
+    font-weight:700;
+
 }
 
 .input-box{
@@ -162,11 +211,13 @@ label{
 
     top:50%;
 
-    transform:translateY(-50%);
-
     right:15px;
 
+    transform:translateY(-50%);
+
     font-size:20px;
+
+    color:white;
 
 }
 
@@ -178,7 +229,7 @@ input{
 
     border:none;
 
-    border-radius:18px;
+    border-radius:16px;
 
     background:rgba(255,255,255,.2);
 
@@ -186,9 +237,9 @@ input{
 
     font-size:16px;
 
-    font-family:'Cairo',sans-serif;
-
     transition:.3s;
+
+    font-family:'Cairo',sans-serif;
 
 }
 
@@ -216,7 +267,7 @@ button{
 
     padding:16px;
 
-    border-radius:18px;
+    border-radius:16px;
 
     background:white;
 
@@ -244,23 +295,23 @@ button:hover{
 
 }
 
-/* رسالة الخطأ */
+/* الخطأ */
 
 .error{
 
     background:rgba(255,0,0,.15);
 
-    border:1px solid rgba(255,255,255,.2);
-
     color:white;
 
     padding:14px;
 
-    border-radius:15px;
+    border-radius:14px;
 
     margin-bottom:20px;
 
     text-align:center;
+
+    border:1px solid rgba(255,255,255,.2);
 
     font-weight:600;
 
@@ -268,7 +319,7 @@ button:hover{
 
 /* الفوتر */
 
-.footer-text{
+.footer{
 
     margin-top:25px;
 
@@ -282,34 +333,25 @@ button:hover{
 
 }
 
-/* ========================= */
-/* Responsive لجميع الأجهزة */
-/* ========================= */
+/* ======================= */
+/* Responsive لكل الأجهزة */
+/* ======================= */
 
-@media (max-width: 992px){
+@media(max-width:992px){
 
 .login-container{
     max-width:450px;
-    padding:35px 25px;
-}
-
-.logo-box h1{
-    font-size:30px;
 }
 
 }
 
-@media (max-width: 768px){
+@media(max-width:768px){
 
 body{
-    padding:20px;
+    padding:15px;
 }
 
 .login-container{
-
-    width:100%;
-
-    max-width:100%;
 
     border-radius:25px;
 
@@ -318,12 +360,12 @@ body{
 }
 
 .logo-img{
-    width:85px;
-    height:85px;
+    width:90px;
+    height:90px;
 }
 
 .logo-box h1{
-    font-size:26px;
+    font-size:28px;
 }
 
 .logo-box p{
@@ -331,27 +373,24 @@ body{
 }
 
 input{
+
     padding:14px 45px 14px 14px;
+
     font-size:15px;
+
 }
 
 button{
+
     padding:14px;
+
     font-size:16px;
-}
 
-.footer-text{
-    font-size:13px;
 }
 
 }
 
-@media (max-width: 480px){
-
-body{
-    align-items:center;
-    padding:15px;
-}
+@media(max-width:480px){
 
 .login-container{
 
@@ -367,7 +406,7 @@ body{
 }
 
 .logo-box h1{
-    font-size:23px;
+    font-size:24px;
 }
 
 .logo-box p{
@@ -379,30 +418,39 @@ label{
 }
 
 input{
+
     font-size:14px;
+
     border-radius:14px;
+
 }
 
 button{
+
     font-size:15px;
+
     border-radius:14px;
+
 }
 
 .error{
     font-size:13px;
-    padding:12px;
+}
+
+.footer{
+    font-size:13px;
 }
 
 }
 
-@media (max-width: 360px){
+@media(max-width:360px){
 
 .login-container{
-    padding:22px 15px;
+    padding:20px 15px;
 }
 
 .logo-box h1{
-    font-size:20px;
+    font-size:21px;
 }
 
 .logo-img{
@@ -432,6 +480,7 @@ button{
 
 <img
 src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg"
+alt="ملوك النزاهة"
 class="logo-img">
 
 <h1>ملوك النزاهة</h1>
@@ -497,7 +546,7 @@ required>
 
 </form>
 
-<div class="footer-text">
+<div class="footer">
 
 <p>
 © جميع الحقوق محفوظة
@@ -562,7 +611,7 @@ data.message ||
 
 }
 
-} catch(error){
+}catch(error){
 
 showError(
 '⚠️ حدث خطأ في الاتصال بالخادم'
