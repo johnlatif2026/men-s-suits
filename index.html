@@ -1,423 +1,627 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر البدل الكلاسيكية - الرئيسية</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+<title>ملوك النزاهة</title>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<link rel="icon" type="image/png"
+href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
 
-        header {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-        .logo h1 {
-            color: #333;
-            font-size: 24px;
-        }
+<style>
 
-        .logo p {
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 28px;
-            background: #667eea;
-            padding: 10px 15px;
-            border-radius: 10px;
-            color: white;
-            transition: transform 0.3s;
-        }
+body{
+    font-family:'Cairo',sans-serif;
+    background:#f4f6f9;
+    min-height:100vh;
+}
 
-        .cart-icon:hover {
-            transform: scale(1.05);
-        }
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
+}
 
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 8px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+header{
+    background:white;
+    border-radius:25px;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
+.logo-img{
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #667eea;
+}
 
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
+.logo-box h1{
+    font-size:32px;
+    color:#222;
+}
 
-        .product-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-        }
+.logo-box p{
+    color:#777;
+    margin-top:5px;
+}
 
-        .product-info {
-            padding: 20px;
-        }
+.cart-icon{
+    position:relative;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    width:60px;
+    height:60px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    cursor:pointer;
+    transition:.3s;
+}
 
-        .product-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
+.cart-icon:hover{
+    transform:scale(1.05);
+}
 
-        .product-price {
-            color: #667eea;
-            font-size: 22px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+.cart-count{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    background:red;
+    color:white;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+}
 
-        .rent-price {
-            color: #ff9800;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+.hero{
+    margin-top:25px;
+    height:320px;
+    border-radius:30px;
+    overflow:hidden;
+    background:
+    linear-gradient(rgba(0,0,0,.55),
+    rgba(0,0,0,.55)),
+    url('https://images.unsplash.com/photo-1593032465171-8bd6b2c9b7a5?q=80&w=1200');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    padding:20px;
+}
 
-        .product-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
+.hero h2{
+    font-size:42px;
+    margin-bottom:15px;
+}
 
-        button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
+.hero p{
+    font-size:18px;
+    line-height:1.8;
+}
 
-        .btn-buy {
-            background: #667eea;
-            color: white;
-        }
+.products-grid{
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:25px;
+}
 
-        .btn-buy:hover {
-            background: #5a67d8;
-        }
+.product-card{
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
 
-        .btn-rent {
-            background: #ff9800;
-            color: white;
-        }
+.product-card:hover{
+    transform:translateY(-10px);
+}
 
-        .btn-rent:hover {
-            background: #f57c00;
-        }
+.product-image{
+    height:220px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:70px;
+    color:white;
+}
 
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
+.product-info{
+    padding:22px;
+}
 
-        .cart-content {
-            background: white;
-            width: 90%;
-            max-width: 600px;
-            padding: 20px;
-            border-radius: 10px;
-            max-height: 80%;
-            overflow-y: auto;
-        }
+.product-title{
+    font-size:22px;
+    font-weight:700;
+    color:#222;
+}
 
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+.product-price{
+    color:#667eea;
+    font-size:28px;
+    font-weight:bold;
+    margin:12px 0;
+}
 
-        .total-price {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 15px 0;
-            text-align: left;
-            color: #667eea;
-        }
+.rent-price{
+    color:#ff9800;
+    font-size:15px;
+}
 
-        .close {
-            float: left;
-            cursor: pointer;
-            font-size: 28px;
-            color: #999;
-        }
+.product-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
 
-        .close:hover {
-            color: #333;
-        }
+button{
+    border:none;
+    cursor:pointer;
+    padding:12px;
+    border-radius:14px;
+    font-family:'Cairo',sans-serif;
+    font-weight:bold;
+    transition:.3s;
+}
 
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #25D366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
-            z-index: 100;
-        }
+.btn-buy{
+    flex:1;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+}
 
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-        }
+.btn-rent{
+    flex:1;
+    background:linear-gradient(135deg,#ff9800,#ff5722);
+    color:white;
+}
 
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-        }
-    </style>
+.btn-buy:hover,
+.btn-rent:hover{
+    transform:translateY(-2px);
+}
+
+.cart-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.cart-content{
+    background:white;
+    width:100%;
+    max-width:700px;
+    border-radius:25px;
+    padding:25px;
+    max-height:85vh;
+    overflow-y:auto;
+}
+
+.close{
+    float:left;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+    flex-wrap:wrap;
+}
+
+.total-price{
+    margin:20px 0;
+    font-size:26px;
+    font-weight:bold;
+    color:#667eea;
+}
+
+.whatsapp-float{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    width:65px;
+    height:65px;
+    background:#25D366;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    cursor:pointer;
+    z-index:999;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+@media(max-width:768px){
+
+.hero{
+    height:240px;
+}
+
+.hero h2{
+    font-size:28px;
+}
+
+.hero p{
+    font-size:15px;
+}
+
+.logo-box{
+    flex-direction:column;
+    text-align:center;
+}
+
+header{
+    justify-content:center;
+}
+
+}
+
+</style>
 </head>
+
 <body>
-    <div class="whatsapp-float" onclick="window.open('https://wa.me/201234567890', '_blank')">
-        💬
-    </div>
 
-    <div class="container">
-        <header>
-            <div class="logo">
-                <h1>🕴️ متجر البدل الكلاسيكية</h1>
-                <p>أناقة راقية - إيجار وبيع - جودة عالية</p>
-            </div>
-            <div class="cart-icon" onclick="showCart()">
-                🛒
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
-        </header>
+<div class="whatsapp-float"
+onclick="window.open('https://wa.me/201234567890', '_blank')">
+💬
+</div>
 
-        <div class="products-grid" id="productsGrid"></div>
-    </div>
+<div class="container">
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="cart-modal">
-        <div class="cart-content">
-            <span class="close" onclick="closeCart()">&times;</span>
-            <h2>🛍️ سلة المشتريات</h2>
-            <div id="cartItems"></div>
-            <div class="total-price" id="totalPrice"></div>
-            <button class="btn-buy" onclick="checkout()" style="width: 100%; padding: 15px; font-size: 18px;">💳 إتمام الشراء</button>
-        </div>
-    </div>
+<header>
 
-    <script>
-        // المنتجات
-        const products = [
-            { id: 1, name: 'بدلة كلاسيك سوداء', price: 1200, rentPrice: 300, image: '👔', category: 'suit', description: 'بدلة أنيقة مناسبة للمناسبات' },
-            { id: 2, name: 'بدلة رمادي فاتح', price: 1500, rentPrice: 350, image: '👔', category: 'suit', description: 'لون عصري وأنيق' },
-            { id: 3, name: 'بدلة زرقاء داكنة', price: 1400, rentPrice: 320, image: '👔', category: 'suit', description: 'كلاسيكية بلمسة عصرية' },
-            { id: 4, name: 'بدلة بيج فاتح', price: 1300, rentPrice: 300, image: '👔', category: 'suit', description: 'مناسبة للأفراح' },
-            { id: 5, name: 'بنطلون كلاسيك أسود', price: 350, rentPrice: 100, image: '👖', category: 'pants', description: 'قماش عالي الجودة' },
-            { id: 6, name: 'بنطلون بيج', price: 400, rentPrice: 120, image: '👖', category: 'pants', description: 'لون محايد وجميل' },
-            { id: 7, name: 'بنطلون رمادي', price: 380, rentPrice: 110, image: '👖', category: 'pants', description: 'مريح وأنيق' },
-            { id: 8, name: 'بنطلون كحلي', price: 420, rentPrice: 130, image: '👖', category: 'pants', description: 'لون جذاب' },
-            { id: 9, name: 'قميص أبيض كلاسيك', price: 250, rentPrice: 80, image: '👕', category: 'shirt', description: 'قطن 100%' },
-            { id: 10, name: 'قميص أزرق', price: 280, rentPrice: 90, image: '👕', category: 'shirt', description: 'لون هادئ' },
-            { id: 11, name: 'قميص رمادي', price: 260, rentPrice: 85, image: '👕', category: 'shirt', description: 'أنيق وعملي' },
-            { id: 12, name: 'حزام جلدي', price: 150, rentPrice: 50, image: '💼', category: 'belt', description: 'جلد طبيعي' },
-            { id: 13, name: 'حزام بني', price: 160, rentPrice: 55, image: '💼', category: 'belt', description: 'مصنوع من أجود الأنواع' },
-            { id: 14, name: 'جزمة جلد لامع', price: 500, rentPrice: 150, image: '👞', category: 'shoe', description: 'مريحة للمشي' },
-            { id: 15, name: 'جزمة سوداء', price: 550, rentPrice: 160, image: '👞', category: 'shoe', description: 'كلاسيكية فاخرة' }
-        ];
+<div class="logo-box">
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+<img src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg"
+class="logo-img">
 
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-        }
+<div>
+<h1>ملوك النزاهة</h1>
+<p>بدل كلاسيكية - إيجار وبيع - جودة عالية</p>
+</div>
 
-        function updateCartCount() {
-            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').innerText = total;
-        }
+</div>
 
-        function addToCart(productId, type) {
-            const product = products.find(p => p.id === productId);
-            const price = type === 'rent' ? product.rentPrice : product.price;
-            const typeText = type === 'rent' ? 'إيجار' : 'شراء';
-            
-            const existingItem = cart.find(item => item.productId === productId && item.type === type);
-            
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({
-                    productId: productId,
-                    name: product.name,
-                    price: price,
-                    type: type,
-                    quantity: 1,
-                    image: product.image
-                });
-            }
-            saveCart();
-            alert(`✅ تمت إضافة ${product.name} (${typeText}) إلى السلة`);
-        }
+<div class="cart-icon" onclick="showCart()">
+🛒
+<span class="cart-count" id="cartCount">0</span>
+</div>
 
-        function showCart() {
-            const cartModal = document.getElementById('cartModal');
-            const cartItemsDiv = document.getElementById('cartItems');
-            const totalPriceDiv = document.getElementById('totalPrice');
-            
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<p style="text-align: center; padding: 20px;">🛒 السلة فارغة</p>';
-                totalPriceDiv.innerHTML = '';
-            } else {
-                cartItemsDiv.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <span style="flex: 2;">${item.image} ${item.name}</span>
-                        <span style="flex: 1;">${item.type === 'rent' ? 'إيجار' : 'شراء'}</span>
-                        <span style="flex: 1;">
-                            <button onclick="changeQuantity(${item.productId}, '${item.type}', -1)" style="width: 30px; background: #f0f0f0;">-</button>
-                            ${item.quantity}
-                            <button onclick="changeQuantity(${item.productId}, '${item.type}', 1)" style="width: 30px; background: #f0f0f0;">+</button>
-                        </span>
-                        <span style="flex: 1;">${item.quantity * item.price} ج.م</span>
-                        <button onclick="removeFromCart(${item.productId}, '${item.type}')" style="flex: 0; background: #dc3545; color: white;">🗑️</button>
-                    </div>
-                `).join('');
-                
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                totalPriceDiv.innerHTML = `💰 الإجمالي: ${total} ج.م`;
-            }
-            
-            cartModal.style.display = 'flex';
-        }
+</header>
 
-        function changeQuantity(productId, type, delta) {
-            const item = cart.find(i => i.productId === productId && i.type === type);
-            if (item) {
-                item.quantity += delta;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId, type);
-                } else {
-                    saveCart();
-                    showCart();
-                }
-            }
-        }
+<div class="hero">
+<div>
+<h2>أفخم البدل الرجالي الكلاسيكية</h2>
+<p>
+تسوق الآن أفضل البدل والإكسسوارات
+بأفضل الأسعار والجودة
+</p>
+</div>
+</div>
 
-        function removeFromCart(productId, type) {
-            cart = cart.filter(item => !(item.productId === productId && item.type === type));
-            saveCart();
-            showCart();
-        }
+<div class="products-grid" id="productsGrid"></div>
 
-        function closeCart() {
-            document.getElementById('cartModal').style.display = 'none';
-        }
+</div>
 
-        function checkout() {
-            if (cart.length === 0) {
-                alert('❌ السلة فارغة! أضف منتجات أولاً');
-                return;
-            }
-            
-            localStorage.setItem('checkoutCart', JSON.stringify(cart));
-            window.location.href = '/pay';
-        }
+<div id="cartModal" class="cart-modal">
+<div class="cart-content">
 
-        // عرض المنتجات
-        function displayProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <div class="product-image">${product.image}</div>
-                    <div class="product-info">
-                        <div class="product-title">${product.name}</div>
-                        <div class="product-price">${product.price} ج.م</div>
-                        <div class="rent-price">📅 إيجار: ${product.rentPrice} ج.م/يوم</div>
-                        <div class="product-actions">
-                            <button class="btn-buy" onclick="addToCart(${product.id}, 'buy')">🛒 شراء</button>
-                            <button class="btn-rent" onclick="addToCart(${product.id}, 'rent')">📅 إيجار</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+<span class="close" onclick="closeCart()">&times;</span>
 
-        displayProducts();
-        updateCartCount();
-    </script>
+<h2 style="margin-bottom:20px;">🛍️ سلة المشتريات</h2>
+
+<div id="cartItems"></div>
+
+<div class="total-price" id="totalPrice"></div>
+
+<button class="btn-buy"
+onclick="checkout()"
+style="width:100%;font-size:18px;">
+💳 إتمام الشراء
+</button>
+
+</div>
+</div>
+
+<script>
+
+const products = [
+{ id: 1, name: 'بدلة كلاسيك سوداء', price: 1200, rentPrice: 300, image: '👔', category: 'suit', description: 'بدلة أنيقة مناسبة للمناسبات' },
+{ id: 2, name: 'بدلة رمادي فاتح', price: 1500, rentPrice: 350, image: '👔', category: 'suit', description: 'لون عصري وأنيق' },
+{ id: 3, name: 'بدلة زرقاء داكنة', price: 1400, rentPrice: 320, image: '👔', category: 'suit', description: 'كلاسيكية بلمسة عصرية' },
+{ id: 4, name: 'بدلة بيج فاتح', price: 1300, rentPrice: 300, image: '👔', category: 'suit', description: 'مناسبة للأفراح' },
+{ id: 5, name: 'بنطلون كلاسيك أسود', price: 350, rentPrice: 100, image: '👖', category: 'pants', description: 'قماش عالي الجودة' },
+{ id: 6, name: 'بنطلون بيج', price: 400, rentPrice: 120, image: '👖', category: 'pants', description: 'لون محايد وجميل' },
+{ id: 7, name: 'بنطلون رمادي', price: 380, rentPrice: 110, image: '👖', category: 'pants', description: 'مريح وأنيق' },
+{ id: 8, name: 'بنطلون كحلي', price: 420, rentPrice: 130, image: '👖', category: 'pants', description: 'لون جذاب' },
+{ id: 9, name: 'قميص أبيض كلاسيك', price: 250, rentPrice: 80, image: '👕', category: 'shirt', description: 'قطن 100%' },
+{ id: 10, name: 'قميص أزرق', price: 280, rentPrice: 90, image: '👕', category: 'shirt', description: 'لون هادئ' },
+{ id: 11, name: 'قميص رمادي', price: 260, rentPrice: 85, image: '👕', category: 'shirt', description: 'أنيق وعملي' },
+{ id: 12, name: 'حزام جلدي', price: 150, rentPrice: 50, image: '💼', category: 'belt', description: 'جلد طبيعي' },
+{ id: 13, name: 'حزام بني', price: 160, rentPrice: 55, image: '💼', category: 'belt', description: 'مصنوع من أجود الأنواع' },
+{ id: 14, name: 'جزمة جلد لامع', price: 500, rentPrice: 150, image: '👞', category: 'shoe', description: 'مريحة للمشي' },
+{ id: 15, name: 'جزمة سوداء', price: 550, rentPrice: 160, image: '👞', category: 'shoe', description: 'كلاسيكية فاخرة' }
+];
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function saveCart() {
+localStorage.setItem('cart', JSON.stringify(cart));
+updateCartCount();
+}
+
+function updateCartCount() {
+const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+document.getElementById('cartCount').innerText = total;
+}
+
+function addToCart(productId, type) {
+
+const product = products.find(p => p.id === productId);
+
+const price =
+type === 'rent'
+? product.rentPrice
+: product.price;
+
+const existingItem =
+cart.find(item =>
+item.productId === productId &&
+item.type === type);
+
+if (existingItem) {
+existingItem.quantity++;
+} else {
+cart.push({
+productId: productId,
+name: product.name,
+price: price,
+type: type,
+quantity: 1,
+image: product.image
+});
+}
+
+saveCart();
+
+alert('✅ تمت إضافة المنتج للسلة');
+
+}
+
+function showCart(){
+
+const cartModal =
+document.getElementById('cartModal');
+
+const cartItemsDiv =
+document.getElementById('cartItems');
+
+const totalPriceDiv =
+document.getElementById('totalPrice');
+
+if(cart.length === 0){
+
+cartItemsDiv.innerHTML =
+'<p style="text-align:center;padding:20px;">🛒 السلة فارغة</p>';
+
+totalPriceDiv.innerHTML='';
+
+}else{
+
+cartItemsDiv.innerHTML =
+cart.map(item => `
+
+<div class="cart-item">
+
+<span>${item.image} ${item.name}</span>
+
+<span>
+${item.type === 'rent'
+? '📅 إيجار'
+: '🛒 شراء'}
+</span>
+
+<span>
+
+<button onclick="changeQuantity(${item.productId}, '${item.type}', -1)">
+-
+</button>
+
+${item.quantity}
+
+<button onclick="changeQuantity(${item.productId}, '${item.type}', 1)">
++
+</button>
+
+</span>
+
+<span>
+${item.quantity * item.price} ج.م
+</span>
+
+<button
+onclick="removeFromCart(${item.productId}, '${item.type}')"
+style="background:red;color:white;">
+🗑️
+</button>
+
+</div>
+
+`).join('');
+
+const total =
+cart.reduce((sum,item)=>
+sum + (item.price * item.quantity),0);
+
+totalPriceDiv.innerHTML =
+`💰 الإجمالي: ${total} ج.م`;
+
+}
+
+cartModal.style.display='flex';
+
+}
+
+function closeCart(){
+document.getElementById('cartModal').style.display='none';
+}
+
+function changeQuantity(productId,type,delta){
+
+const item =
+cart.find(i =>
+i.productId === productId &&
+i.type === type);
+
+if(item){
+
+item.quantity += delta;
+
+if(item.quantity <= 0){
+removeFromCart(productId,type);
+}else{
+saveCart();
+showCart();
+}
+
+}
+
+}
+
+function removeFromCart(productId,type){
+
+cart =
+cart.filter(item =>
+!(item.productId === productId &&
+item.type === type));
+
+saveCart();
+
+showCart();
+
+}
+
+function checkout(){
+
+if(cart.length === 0){
+alert('❌ السلة فارغة');
+return;
+}
+
+localStorage.setItem('checkoutCart', JSON.stringify(cart));
+
+window.location.href='/pay';
+
+}
+
+function displayProducts(){
+
+const grid =
+document.getElementById('productsGrid');
+
+grid.innerHTML =
+products.map(product => `
+
+<div class="product-card">
+
+<div class="product-image">
+${product.image}
+</div>
+
+<div class="product-info">
+
+<div class="product-title">
+${product.name}
+</div>
+
+<div class="product-price">
+${product.price} ج.م
+</div>
+
+<div class="rent-price">
+📅 إيجار:
+${product.rentPrice} ج.م/يوم
+</div>
+
+<div class="product-actions">
+
+<button
+class="btn-buy"
+onclick="addToCart(${product.id}, 'buy')">
+
+🛒 شراء
+
+</button>
+
+<button
+class="btn-rent"
+onclick="addToCart(${product.id}, 'rent')">
+
+📅 إيجار
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+displayProducts();
+updateCartCount();
+
+</script>
+
 </body>
 </html>
