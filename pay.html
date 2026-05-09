@@ -1,342 +1,564 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فاتورة الدفع - متجر البدل الكلاسيكية</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+<meta charset="UTF-8">
 
-        .invoice {
-            background: white;
-            max-width: 900px;
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            overflow: hidden;
-            animation: fadeInUp 0.5s ease;
-        }
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+<title>فاتورة الدفع - ملوك النزاهة</title>
 
-        .invoice-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
+<link rel="icon" type="image/png"
+href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
 
-        .invoice-header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-        .invoice-body {
-            padding: 30px;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-        .invoice-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+<style>
 
-        .info-box h3 {
-            color: #667eea;
-            margin-bottom: 8px;
-        }
-
-        .info-box p {
-            color: #666;
-            font-size: 16px;
-        }
-
-        .items-table {
-            width: 100%;
-            margin-bottom: 30px;
-        }
-
-        .items-table th, .items-table td {
-            padding: 12px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
-        }
-
-        .items-table th {
-            background: #f8f9fa;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .total-section {
-            text-align: left;
-            font-size: 26px;
-            font-weight: bold;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-            color: #667eea;
-        }
-
-        .payment-form {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-pay {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .btn-pay:hover {
-            transform: translateY(-2px);
-        }
-
-        .invoice-footer {
-            padding: 20px;
-            text-align: center;
-            background: #f8f9fa;
-            color: #666;
-            font-size: 12px;
-        }
-
-        @media print {
-            .payment-form, .btn-pay, .no-print {
-                display: none;
-            }
-            
-            .invoice {
-                box-shadow: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .invoice-body {
-                padding: 20px;
-            }
-            
-            .items-table th, .items-table td {
-                font-size: 12px;
-                padding: 8px;
-            }
-            
-            .total-section {
-                font-size: 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="invoice" id="invoice">
-        <div class="invoice-header">
-            <h1>🕴️ فاتورة الدفع</h1>
-            <p>متجر البدل الكلاسيكية - إيجار وبيع</p>
-        </div>
-        
-        <div class="invoice-body">
-            <div class="invoice-info">
-                <div class="info-box">
-                    <h3>📄 رقم الفاتورة</h3>
-                    <p id="invoiceNumber">#INV-001</p>
-                </div>
-                <div class="info-box">
-                    <h3>📅 التاريخ</h3>
-                    <p id="invoiceDate"></p>
-                </div>
-                <div class="info-box">
-                    <h3>⏰ الوقت</h3>
-                    <p id="invoiceTime"></p>
-                </div>
-            </div>
-            
-            <table class="items-table">
-                <thead>
-                    <tr>
-                        <th>المنتج</th>
-                        <th>النوع</th>
-                        <th>الكمية</th>
-                        <th>السعر</th>
-                        <th>الإجمالي</th>
-                    </tr>
-                </thead>
-                <tbody id="invoiceItems"></tbody>
-            </table>
-            
-            <div class="total-section">
-                <span>💰 الإجمالي النهائي: </span>
-                <span id="grandTotal">0 ج.م</span>
-            </div>
-            
-            <div class="payment-form no-print">
-                <h3>📝 معلومات العميل</h3>
-                <div class="form-group">
-                    <label>👤 اسم العميل</label>
-                    <input type="text" id="customerName" placeholder="أدخل اسمك الكامل" required>
-                </div>
-                <div class="form-group">
-                    <label>📞 رقم الهاتف</label>
-                    <input type="tel" id="customerPhone" placeholder="أدخل رقم الهاتف للتواصل" required>
-                </div>
-                <button class="btn-pay" onclick="processPayment()">✅ تأكيد الطلب وإتمام الشراء</button>
-            </div>
-        </div>
-        
-        <div class="invoice-footer">
-            <p>شكراً لتسوقكم معنا - مع خالص التقدير، متجر البدل الكلاسيكية</p>
-            <p>سيتم التواصل معكم خلال 24 ساعة لتأكيد الطلب</p>
-        </div>
-    </div>
-
-    <script>
-        const API_URL = window.location.origin;
-        
-        // التحقق من وجود سلة مشتريات
-        const cart = JSON.parse(localStorage.getItem('checkoutCart'));
-        
-        if (!cart || cart.length === 0) {
-            alert('⚠️ لا توجد منتجات للدفع. سيتم تحويلك للصفحة الرئيسية');
-            window.location.href = '/';
-        }
-        
-        // توليد رقم فاتورة
-        const now = new Date();
-        document.getElementById('invoiceNumber').innerHTML = `#INV-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}`;
-        document.getElementById('invoiceDate').innerText = now.toLocaleDateString('ar-EG');
-        document.getElementById('invoiceTime').innerText = now.toLocaleTimeString('ar-EG');
-        
-        // عرض المنتجات في الفاتورة
-        const invoiceItems = document.getElementById('invoiceItems');
-        let grandTotal = 0;
-        
-        cart.forEach(item => {
-            const total = item.price * item.quantity;
-            grandTotal += total;
-            
-            invoiceItems.innerHTML += `
-                <tr>
-                    <td>${item.image} ${item.name}</td>
-                    <td>${item.type === 'rent' ? '📅 إيجار' : '🛒 شراء'}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.price} ج.م</td>
-                    <td><strong>${total} ج.م</strong></td>
-                </tr>
-            `;
-        });
-        
-        document.getElementById('grandTotal').innerHTML = `${grandTotal} ج.م`;
-        
-async function processPayment() {
-    const customerName = document.getElementById('customerName').value;
-    const customerPhone = document.getElementById('customerPhone').value;
-    
-    if (!customerName || !customerPhone) {
-        alert('❌ يرجى إدخال جميع بيانات العميل');
-        return;
-    }
-    
-    if (customerPhone.length < 10) {
-        alert('❌ يرجى إدخال رقم هاتف صحيح');
-        return;
-    }
-    
-    // إزالة الـ id هنا - let Firebase generat it
-    const order = {
-        // لا نضع id هنا! Firebase سينشئه تلقائياً
-        customerName: customerName,
-        customerPhone: customerPhone,
-        items: cart,
-        total: grandTotal,
-        date: new Date().toISOString(),
-        paymentMethod: 'نقدي عند الاستلام',
-        status: 'pending'
-    };
-    
-    try {
-        const response = await fetch(`${API_URL}/api/orders`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(order)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            alert('✅ تم تأكيد طلبك بنجاح! رقم الطلب: #' + result.order.id.slice(0, 8));
-            localStorage.removeItem('checkoutCart');
-            localStorage.removeItem('cart');
-            window.location.href = '/';
-        } else {
-            const error = await response.json();
-            alert('❌ حدث خطأ في حفظ الطلب: ' + (error.message || 'يرجى المحاولة مرة أخرى'));
-        }
-    } catch (error) {
-        console.error('Error saving order:', error);
-        alert('❌ حدث خطأ في الاتصال بالخادم');
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
-    </script>
+
+body{
+font-family:'Cairo',sans-serif;
+background:#eef2f7;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.invoice{
+background:white;
+width:100%;
+max-width:950px;
+border-radius:30px;
+overflow:hidden;
+box-shadow:0 20px 50px rgba(0,0,0,.12);
+}
+
+.invoice-header{
+background:linear-gradient(135deg,#667eea,#764ba2);
+padding:40px 20px;
+text-align:center;
+color:white;
+}
+
+.invoice-logo{
+width:110px;
+height:110px;
+border-radius:50%;
+object-fit:cover;
+border:5px solid rgba(255,255,255,.4);
+margin-bottom:15px;
+}
+
+.invoice-header h1{
+font-size:36px;
+margin-bottom:10px;
+}
+
+.invoice-body{
+padding:30px;
+}
+
+.invoice-info{
+display:flex;
+justify-content:space-between;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:30px;
+padding-bottom:20px;
+border-bottom:2px solid #eee;
+}
+
+.info-box h3{
+color:#667eea;
+margin-bottom:8px;
+}
+
+.items-table{
+width:100%;
+border-collapse:collapse;
+margin-bottom:30px;
+}
+
+.items-table th,
+.items-table td{
+padding:14px;
+border-bottom:1px solid #eee;
+text-align:right;
+}
+
+.items-table th{
+background:#f7f7f7;
+}
+
+.total-section{
+font-size:28px;
+font-weight:bold;
+color:#667eea;
+margin-top:20px;
+}
+
+.payment-form{
+margin-top:35px;
+background:#f7f9fc;
+padding:25px;
+border-radius:25px;
+}
+
+.payment-form h3{
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-weight:700;
+color:#444;
+}
+
+.form-group input,
+.form-group select{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:2px solid #ddd;
+font-size:16px;
+font-family:'Cairo',sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+outline:none;
+border-color:#667eea;
+}
+
+.transfer-info{
+background:#e8fff0;
+border:2px dashed #28a745;
+padding:20px;
+border-radius:15px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+color:#28a745;
+margin-top:15px;
+}
+
+.btn-pay{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#28a745,#20c997);
+color:white;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+.invoice-footer{
+padding:20px;
+background:#f7f7f7;
+text-align:center;
+color:#666;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.invoice-body{
+padding:20px;
+}
+
+.items-table th,
+.items-table td{
+font-size:12px;
+padding:8px;
+}
+
+.invoice-header h1{
+font-size:28px;
+}
+
+.invoice-logo{
+width:85px;
+height:85px;
+}
+
+.total-section{
+font-size:22px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="invoice">
+
+<div class="invoice-header">
+
+<img src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg"
+class="invoice-logo">
+
+<h1>فاتورة الدفع</h1>
+
+<p>ملوك النزاهة - بدل كلاسيكية وإكسسوارات</p>
+
+</div>
+
+<div class="invoice-body">
+
+<div class="invoice-info">
+
+<div class="info-box">
+<h3>📄 رقم الفاتورة</h3>
+<p id="invoiceNumber"></p>
+</div>
+
+<div class="info-box">
+<h3>📅 التاريخ</h3>
+<p id="invoiceDate"></p>
+</div>
+
+<div class="info-box">
+<h3>⏰ الوقت</h3>
+<p id="invoiceTime"></p>
+</div>
+
+</div>
+
+<table class="items-table">
+
+<thead>
+
+<tr>
+<th>المنتج</th>
+<th>النوع</th>
+<th>الكمية</th>
+<th>السعر</th>
+<th>الإجمالي</th>
+</tr>
+
+</thead>
+
+<tbody id="invoiceItems"></tbody>
+
+</table>
+
+<div class="total-section">
+
+💰 الإجمالي النهائي:
+<span id="grandTotal"></span>
+
+</div>
+
+<div class="payment-form">
+
+<h3>📝 معلومات العميل</h3>
+
+<div class="form-group">
+<label>👤 الاسم</label>
+<input type="text"
+id="customerName"
+placeholder="أدخل اسمك الكامل">
+</div>
+
+<div class="form-group">
+<label>📞 رقم الهاتف</label>
+<input type="tel"
+id="customerPhone"
+placeholder="أدخل رقم الهاتف">
+</div>
+
+<div class="form-group">
+<label>📍 العنوان</label>
+<input type="text"
+id="customerAddress"
+placeholder="أدخل العنوان بالكامل">
+</div>
+
+<div class="form-group">
+<label>🏠 علامة مميزة</label>
+<input type="text"
+id="customerMark"
+placeholder="مثال: بجوار مسجد">
+</div>
+
+<div class="form-group">
+
+<label>💳 طريقة الدفع</label>
+
+<select id="paymentMethod"
+onchange="toggleTransferBox()">
+
+<option value="cash">
+الدفع عند الاستلام
+</option>
+
+<option value="transfer">
+تحويل
+</option>
+
+</select>
+
+</div>
+
+<div id="transferBox"
+style="display:none;">
+
+<div class="transfer-info">
+
+📌 رقم التحويل
+
+<br><br>
+
+01012345678
+
+</div>
+
+</div>
+
+<button class="btn-pay"
+onclick="processPayment()">
+
+✅ تأكيد الطلب
+
+</button>
+
+</div>
+
+</div>
+
+<div class="invoice-footer">
+
+شكراً لتسوقكم معنا ❤️
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL = window.location.origin;
+
+const cart =
+JSON.parse(localStorage.getItem('checkoutCart'));
+
+if(!cart || cart.length === 0){
+
+alert('⚠️ لا توجد منتجات');
+
+window.location.href='/';
+
+}
+
+const now = new Date();
+
+document.getElementById('invoiceNumber').innerHTML =
+`#INV-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}`;
+
+document.getElementById('invoiceDate').innerText =
+now.toLocaleDateString('ar-EG');
+
+document.getElementById('invoiceTime').innerText =
+now.toLocaleTimeString('ar-EG');
+
+const invoiceItems =
+document.getElementById('invoiceItems');
+
+let grandTotal = 0;
+
+cart.forEach(item => {
+
+const total =
+item.price * item.quantity;
+
+grandTotal += total;
+
+invoiceItems.innerHTML += `
+
+<tr>
+
+<td>
+${item.image} ${item.name}
+</td>
+
+<td>
+${item.type === 'rent'
+? '📅 إيجار'
+: '🛒 شراء'}
+</td>
+
+<td>
+${item.quantity}
+</td>
+
+<td>
+${item.price} ج.م
+</td>
+
+<td>
+<strong>${total} ج.م</strong>
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById('grandTotal').innerHTML =
+`${grandTotal} ج.م`;
+
+function toggleTransferBox(){
+
+const method =
+document.getElementById('paymentMethod').value;
+
+const transferBox =
+document.getElementById('transferBox');
+
+if(method === 'transfer'){
+transferBox.style.display='block';
+}else{
+transferBox.style.display='none';
+}
+
+}
+
+async function processPayment(){
+
+const customerName =
+document.getElementById('customerName').value;
+
+const customerPhone =
+document.getElementById('customerPhone').value;
+
+const customerAddress =
+document.getElementById('customerAddress').value;
+
+const customerMark =
+document.getElementById('customerMark').value;
+
+const paymentMethod =
+document.getElementById('paymentMethod').value;
+
+if(
+!customerName ||
+!customerPhone ||
+!customerAddress
+){
+
+alert('❌ يرجى إدخال جميع البيانات');
+
+return;
+
+}
+
+if(customerPhone.length < 10){
+
+alert('❌ رقم الهاتف غير صحيح');
+
+return;
+
+}
+
+const order = {
+
+customerName: customerName,
+
+customerPhone: customerPhone,
+
+customerAddress: customerAddress,
+
+customerMark: customerMark,
+
+items: cart,
+
+total: grandTotal,
+
+date: new Date().toISOString(),
+
+paymentMethod:
+paymentMethod === 'cash'
+? 'الدفع عند الاستلام'
+: 'تحويل',
+
+status: 'pending'
+
+};
+
+try{
+
+const response =
+await fetch(`${API_URL}/api/orders`,{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify(order)
+
+});
+
+if(response.ok){
+
+const result =
+await response.json();
+
+alert(
+'✅ تم تأكيد الطلب بنجاح! رقم الطلب: #'
++ result.order.id.slice(0,8)
+);
+
+localStorage.removeItem('checkoutCart');
+
+localStorage.removeItem('cart');
+
+window.location.href='/';
+
+}else{
+
+const error =
+await response.json();
+
+alert(
+'❌ حدث خطأ: '
++ (error.message || '')
+);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+alert('❌ حدث خطأ في الاتصال بالخادم');
+
+}
+
+}
+
+</script>
+
 </body>
 </html>
