@@ -1,176 +1,392 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - ملوك النزاهة</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<meta charset="UTF-8">
 
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 90%;
-            max-width: 400px;
-            animation: fadeIn 0.5s ease;
-        }
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+<title>تسجيل الدخول - ملوك النزاهة</title>
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-            font-size: 28px;
-        }
+<link rel="icon" type="image/png"
+href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-weight: bold;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
+<style>
 
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+body{
+    font-family:'Cairo',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    position:relative;
+    background:
+    linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+}
 
-        button:hover {
-            transform: translateY(-2px);
-        }
+body::before{
+    content:'';
+    position:absolute;
+    width:700px;
+    height:700px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+    top:-250px;
+    left:-250px;
+}
 
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            border-right: 4px solid #c33;
-        }
+body::after{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:rgba(255,255,255,.05);
+    border-radius:50%;
+    bottom:-200px;
+    right:-200px;
+}
 
-        .info {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #666;
-            font-size: 14px;
-        }
+.login-container{
+    position:relative;
+    z-index:10;
+    width:90%;
+    max-width:430px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:35px;
+    padding:40px 30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    animation:fadeIn .6s ease;
+}
 
-        .info p {
-            margin: 5px 0;
-        }
-    </style>
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.logo-box{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo-img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,.4);
+    margin-bottom:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.logo-box h1{
+    color:white;
+    font-size:34px;
+    margin-bottom:8px;
+    font-weight:800;
+}
+
+.logo-box p{
+    color:rgba(255,255,255,.85);
+    font-size:15px;
+}
+
+.input-group{
+    margin-bottom:22px;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+    color:white;
+    font-weight:700;
+    font-size:15px;
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box span{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    right:15px;
+    font-size:20px;
+}
+
+input{
+    width:100%;
+    padding:15px 50px 15px 15px;
+    border:none;
+    border-radius:18px;
+    background:rgba(255,255,255,.2);
+    color:white;
+    font-size:16px;
+    font-family:'Cairo',sans-serif;
+    transition:.3s;
+}
+
+input::placeholder{
+    color:rgba(255,255,255,.7);
+}
+
+input:focus{
+    outline:none;
+    background:rgba(255,255,255,.3);
+    transform:translateY(-2px);
+}
+
+button{
+    width:100%;
+    border:none;
+    padding:16px;
+    border-radius:18px;
+    background:white;
+    color:#667eea;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:10px;
+    font-family:'Cairo',sans-serif;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.error{
+    background:rgba(255,0,0,.15);
+    border:1px solid rgba(255,255,255,.2);
+    color:white;
+    padding:14px;
+    border-radius:15px;
+    margin-bottom:20px;
+    text-align:center;
+    font-weight:600;
+}
+
+.footer-text{
+    margin-top:25px;
+    text-align:center;
+    color:rgba(255,255,255,.8);
+    font-size:14px;
+    line-height:1.8;
+}
+
+@media(max-width:480px){
+
+.login-container{
+    padding:30px 22px;
+    border-radius:28px;
+}
+
+.logo-img{
+    width:90px;
+    height:90px;
+}
+
+.logo-box h1{
+    font-size:28px;
+}
+
+button{
+    font-size:16px;
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
-    <div class="login-container">
-        <h2>🔐 تسجيل الدخول</h2>
-        <div id="errorMsg" class="error" style="display: none;"></div>
-        <form id="loginForm">
-            <div class="input-group">
-                <label>👤 اسم المستخدم</label>
-                <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
-            </div>
-            <div class="input-group">
-                <label>🔒 كلمة المرور</label>
-                <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-            </div>
-            <button type="submit">🚪 دخول</button>
-        </form>
-    </div>
 
-    <script>
-        // تحديد API URL تلقائياً
-        const API_URL = window.location.origin;
+<div class="login-container">
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            try {
-                const response = await fetch(`${API_URL}/api/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    localStorage.setItem('token', data.token);
-                    window.location.href = '/dashboard';
-                } else {
-                    showError(data.message || '❌ اسم المستخدم أو كلمة المرور غير صحيحة');
-                }
-            } catch (error) {
-                showError('⚠️ حدث خطأ في الاتصال بالخادم');
-            }
-        });
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMsg');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
-        }
-    </script>
+<div class="logo-box">
+
+<img
+src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg"
+class="logo-img">
+
+<h1>ملوك النزاهة</h1>
+
+<p>
+لوحة التحكم الخاصة بالإدارة
+</p>
+
+</div>
+
+<div id="errorMsg"
+class="error"
+style="display:none;">
+</div>
+
+<form id="loginForm">
+
+<div class="input-group">
+
+<label>
+👤 اسم المستخدم
+</label>
+
+<div class="input-box">
+
+<span>👤</span>
+
+<input
+type="text"
+id="username"
+placeholder="أدخل اسم المستخدم"
+required>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>
+🔒 كلمة المرور
+</label>
+
+<div class="input-box">
+
+<span>🔒</span>
+
+<input
+type="password"
+id="password"
+placeholder="أدخل كلمة المرور"
+required>
+
+</div>
+
+</div>
+
+<button type="submit">
+
+🚪 تسجيل الدخول
+
+</button>
+
+</form>
+
+<div class="footer-text">
+
+<p>
+© جميع الحقوق محفوظة 2026
+</p>
+
+<p>
+ملوك النزاهة
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL = window.location.origin;
+
+document.getElementById('loginForm')
+.addEventListener('submit', async (e) => {
+
+e.preventDefault();
+
+const username =
+document.getElementById('username').value;
+
+const password =
+document.getElementById('password').value;
+
+try{
+
+const response =
+await fetch(`${API_URL}/api/login`, {
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+username,
+password
+})
+
+});
+
+const data = await response.json();
+
+if(response.ok){
+
+localStorage.setItem('token', data.token);
+
+window.location.href='/dashboard';
+
+}else{
+
+showError(
+data.message ||
+'❌ اسم المستخدم أو كلمة المرور غير صحيحة'
+);
+
+}
+
+}catch(error){
+
+showError(
+'⚠️ حدث خطأ في الاتصال بالخادم'
+);
+
+}
+
+});
+
+function showError(message){
+
+const errorDiv =
+document.getElementById('errorMsg');
+
+errorDiv.textContent = message;
+
+errorDiv.style.display = 'block';
+
+setTimeout(() => {
+
+errorDiv.style.display = 'none';
+
+},3000);
+
+}
+
+</script>
+
 </body>
 </html>
