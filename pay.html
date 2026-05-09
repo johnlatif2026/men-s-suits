@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورة الدفع - متجر البدل الكلاسيكية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .invoice {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .invoice-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .invoice-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .invoice-body {
+            padding: 30px;
+        }
+
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .items-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .items-table th, .items-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        .items-table th {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .total-section {
+            text-align: left;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .payment-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-pay:hover {
+            background: #218838;
+        }
+
+        .invoice-footer {
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 12px;
+        }
+
+        @media print {
+            .payment-form, .btn-pay, .no-print {
+                display: none;
+            }
+            
+            .invoice {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice" id="invoice">
+        <div class="invoice-header">
+            <h1>🕴️ فاتورة الدفع</h1>
+            <p>متجر البدل الكلاسيكية - إيجار وبيع</p>
+        </div>
+        
+        <div class="invoice-body">
+            <div class="invoice-info">
+                <div class="info-box">
+                    <h3>رقم الفاتورة</h3>
+                    <p id="invoiceNumber">#INV-001</p>
+                </div>
+                <div class="info-box">
+                    <h3>التاريخ</h3>
+                    <p id="invoiceDate"></p>
+                </div>
+                <div class="info-box">
+                    <h3>العميل</h3>
+                    <p>عميل متجر</p>
+                </div>
+            </div>
+            
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>المنتج</th>
+                        <th>النوع</th>
+                        <th>الكمية</th>
+                        <th>السعر</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems"></tbody>
+            </table>
+            
+            <div class="total-section">
+                <span>الإجمالي النهائي: </span>
+                <span id="grandTotal">0 ج.م</span>
+            </div>
+            
+            <div class="payment-form no-print">
+                <h3>معلومات الدفع</h3>
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="customerName" placeholder="أدخل اسمك">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="customerPhone" placeholder="أدخل رقم الهاتف">
+                </div>
+                <button class="btn-pay" onclick="processPayment()">تأكيد الدفع وإنهاء الطلب</button>
+            </div>
+        </div>
+        
+        <div class="invoice-footer">
+            <p>شكراً لتسوقكم معنا - مع خالص التقدير، متجر البدل الكلاسيكية</p>
+            <p>هذه الفاتورة تعتبر إثبات شراء صالح</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        
+        // التحقق من وجود سلة مشتريات
+        const cart = JSON.parse(localStorage.getItem('checkoutCart'));
+        
+        if (!cart || cart.length === 0) {
+            alert('لا توجد منتجات للدفع. سيتم تحويلك للصفحة الرئيسية');
+            window.location.href = '/';
+        }
+        
+        // توليد رقم فاتورة عشوائي
+        document.getElementById('invoiceNumber').innerText = `#INV-${Date.now()}`;
+        document.getElementById('invoiceDate').innerText = new Date().toLocaleDateString('ar-EG');
+        
+        // عرض المنتجات في الفاتورة
+        const invoiceItems = document.getElementById('invoiceItems');
+        let grandTotal = 0;
+        
+        cart.forEach(item => {
+            const total = item.price * item.quantity;
+            grandTotal += total;
+            
+            invoiceItems.innerHTML += `
+                <tr>
+                    <td>${item.image} ${item.name}</td>
+                    <td>${item.type === 'rent' ? 'إيجار' : 'شراء'}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price} ج.م</td>
+                    <td>${total} ج.م</td>
+                </tr>
+            `;
+        });
+        
+        document.getElementById('grandTotal').innerHTML = `${grandTotal} ج.م`;
+        
+        async function processPayment() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            
+            if (!customerName || !customerPhone) {
+                alert('يرجى إدخال جميع بيانات العميل');
+                return;
+            }
+            
+            const order = {
+                id: Date.now(),
+                customerName: customerName,
+                customerPhone: customerPhone,
+                items: cart,
+                total: grandTotal,
+                date: new Date().toISOString(),
+                paymentMethod: 'نقدي عند الاستلام'
+            };
+            
+            try {
+                // حفظ الطلب في الخادم
+                const response = await fetch(`${API_URL}/api/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                });
+                
+                if (response.ok) {
+                    alert('تم تأكيد طلبك بنجاح! شكراً للتسوق معنا');
+                    localStorage.removeItem('checkoutCart');
+                    localStorage.removeItem('cart');
+                    window.location.href = '/';
+                } else {
+                    alert('حدث خطأ في حفظ الطلب. يرجى المحاولة مرة أخرى');
+                }
+            } catch (error) {
+                console.error('Error saving order:', error);
+                alert('حدث خطأ في الاتصال بالخادم');
+            }
+        }
+    </script>
+</body>
+</html>
