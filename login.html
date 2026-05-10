@@ -1,644 +1,637 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>تسجيل الدخول - ملوك النزاهة</title>
-
-<link rel="icon"
-type="image/png"
-href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
-
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap"
-rel="stylesheet">
-
+<link rel="icon" type="image/png" href="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-
-    font-family:'Cairo',sans-serif;
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    overflow:hidden;
-
-    position:relative;
-
-    background:
-    linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-
-    padding:20px;
-
-}
-
-/* خلفيات ديكورية */
-
-body::before{
-
-    content:'';
-
-    position:absolute;
-
-    width:700px;
-    height:700px;
-
-    background:rgba(255,255,255,.08);
-
-    border-radius:50%;
-
-    top:-250px;
-    left:-250px;
-
-}
-
-body::after{
-
-    content:'';
-
-    position:absolute;
-
-    width:500px;
-    height:500px;
-
-    background:rgba(255,255,255,.05);
-
-    border-radius:50%;
-
-    bottom:-200px;
-    right:-200px;
-
-}
-
-/* الكونتينر */
-
-.login-container{
-
-    position:relative;
-
-    z-index:10;
-
-    width:100%;
-
-    max-width:430px;
-
-    background:rgba(255,255,255,.15);
-
-    backdrop-filter:blur(15px);
-
-    border:1px solid rgba(255,255,255,.2);
-
-    border-radius:30px;
-
-    padding:40px 30px;
-
-    box-shadow:0 20px 60px rgba(0,0,0,.25);
-
-    animation:fadeIn .6s ease;
-
-}
-
-/* الانيميشن */
-
-@keyframes fadeIn{
-
-    from{
-        opacity:0;
-        transform:translateY(30px);
+    /* RESET شامل */
+    *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    to{
-        opacity:1;
-        transform:translateY(0);
+    body {
+        font-family: 'Cairo', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        /* منع التمرير الزائد */
+        overflow-x: hidden;
     }
 
-}
-
-/* اللوجو */
-
-.logo-box{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.logo-img{
-
-    width:110px;
-    height:110px;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    border:5px solid rgba(255,255,255,.3);
-
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
-
-    margin-bottom:15px;
-
-}
-
-.logo-box h1{
-
-    color:white;
-
-    font-size:34px;
-
-    font-weight:800;
-
-    margin-bottom:8px;
-
-}
-
-.logo-box p{
-
-    color:rgba(255,255,255,.85);
-
-    font-size:15px;
-
-}
-
-/* الفورم */
-
-.input-group{
-    margin-bottom:22px;
-}
-
-label{
-
-    display:block;
-
-    margin-bottom:10px;
-
-    color:white;
-
-    font-size:15px;
-
-    font-weight:700;
-
-}
-
-.input-box{
-    position:relative;
-}
-
-.input-box span{
-
-    position:absolute;
-
-    top:50%;
-
-    right:15px;
-
-    transform:translateY(-50%);
-
-    font-size:20px;
-
-    color:white;
-
-}
-
-input{
-
-    width:100%;
-
-    padding:15px 50px 15px 15px;
-
-    border:none;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,.2);
-
-    color:white;
-
-    font-size:16px;
-
-    transition:.3s;
-
-    font-family:'Cairo',sans-serif;
-
-}
-
-input::placeholder{
-    color:rgba(255,255,255,.7);
-}
-
-input:focus{
-
-    outline:none;
-
-    background:rgba(255,255,255,.3);
-
-    transform:translateY(-2px);
-
-}
-
-/* الزر */
-
-button{
-
-    width:100%;
-
-    border:none;
-
-    padding:16px;
-
-    border-radius:16px;
-
-    background:white;
-
-    color:#667eea;
-
-    font-size:18px;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-    margin-top:10px;
-
-    font-family:'Cairo',sans-serif;
-
-}
-
-button:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
-
-}
-
-/* الخطأ */
-
-.error{
-
-    background:rgba(255,0,0,.15);
-
-    color:white;
-
-    padding:14px;
-
-    border-radius:14px;
-
-    margin-bottom:20px;
-
-    text-align:center;
-
-    border:1px solid rgba(255,255,255,.2);
-
-    font-weight:600;
-
-}
-
-/* الفوتر */
-
-.footer{
-
-    margin-top:25px;
-
-    text-align:center;
-
-    color:rgba(255,255,255,.8);
-
-    font-size:14px;
-
-    line-height:1.8;
-
-}
-
-/* ======================= */
-/* Responsive لكل الأجهزة */
-/* ======================= */
-
-@media(max-width:992px){
-
-.login-container{
-    max-width:450px;
-}
-
-}
-
-@media(max-width:768px){
-
-body{
-    padding:15px;
-}
-
-.login-container{
-
-    border-radius:25px;
-
-    padding:30px 22px;
-
-}
-
-.logo-img{
-    width:90px;
-    height:90px;
-}
-
-.logo-box h1{
-    font-size:28px;
-}
-
-.logo-box p{
-    font-size:14px;
-}
-
-input{
-
-    padding:14px 45px 14px 14px;
-
-    font-size:15px;
-
-}
-
-button{
-
-    padding:14px;
-
-    font-size:16px;
-
-}
-
-}
-
-@media(max-width:480px){
-
-.login-container{
-
-    padding:25px 18px;
-
-    border-radius:22px;
-
-}
-
-.logo-img{
-    width:75px;
-    height:75px;
-}
-
-.logo-box h1{
-    font-size:24px;
-}
-
-.logo-box p{
-    font-size:13px;
-}
-
-label{
-    font-size:14px;
-}
-
-input{
-
-    font-size:14px;
-
-    border-radius:14px;
-
-}
-
-button{
-
-    font-size:15px;
-
-    border-radius:14px;
-
-}
-
-.error{
-    font-size:13px;
-}
-
-.footer{
-    font-size:13px;
-}
-
-}
-
-@media(max-width:360px){
-
-.login-container{
-    padding:20px 15px;
-}
-
-.logo-box h1{
-    font-size:21px;
-}
-
-.logo-img{
-    width:65px;
-    height:65px;
-}
-
-input{
-    padding:12px 40px 12px 12px;
-}
-
-button{
-    padding:12px;
-}
-
-}
-
+    /* خلفيات ديكورية - متجاوبة */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 70vw;
+        height: 70vw;
+        max-width: 700px;
+        max-height: 700px;
+        background: rgba(255,255,255,.08);
+        border-radius: 50%;
+        top: -20vw;
+        left: -20vw;
+        pointer-events: none;
+    }
+
+    body::after {
+        content: '';
+        position: absolute;
+        width: 50vw;
+        height: 50vw;
+        max-width: 500px;
+        max-height: 500px;
+        background: rgba(255,255,255,.05);
+        border-radius: 50%;
+        bottom: -15vw;
+        right: -15vw;
+        pointer-events: none;
+    }
+
+    /* الكونتينر الرئيسي - مرن بالكامل */
+    .login-container {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 500px;
+        background: rgba(255,255,255,.15);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 40px;
+        padding: clamp(20px, 6vw, 45px) clamp(15px, 5vw, 35px);
+        box-shadow: 0 20px 60px rgba(0,0,0,.25);
+        animation: fadeIn 0.6s ease;
+        transition: all 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* اللوجو - responsive perfect */
+    .logo-box {
+        text-align: center;
+        margin-bottom: clamp(20px, 5vh, 40px);
+    }
+    
+    .logo-img {
+        width: clamp(75px, 20vw, 120px);
+        height: clamp(75px, 20vw, 120px);
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255,255,255,.4);
+        box-shadow: 0 10px 25px rgba(0,0,0,.2);
+        margin-bottom: clamp(10px, 3vw, 18px);
+        transition: transform 0.3s ease;
+    }
+    
+    .logo-img:hover {
+        transform: scale(1.02);
+    }
+    
+    .logo-box h1 {
+        color: white;
+        font-size: clamp(24px, 7vw, 38px);
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+    }
+    
+    .logo-box p {
+        color: rgba(255,255,255,.9);
+        font-size: clamp(13px, 3.5vw, 16px);
+        font-weight: 500;
+    }
+
+    /* مجموعة الإدخالات */
+    .input-group {
+        margin-bottom: clamp(18px, 4vh, 26px);
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: white;
+        font-size: clamp(14px, 3.5vw, 16px);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .input-box {
+        position: relative;
+        width: 100%;
+    }
+    
+    .input-box span {
+        position: absolute;
+        top: 50%;
+        right: 18px;
+        transform: translateY(-50%);
+        font-size: clamp(18px, 5vw, 22px);
+        color: white;
+        pointer-events: none;
+        z-index: 2;
+    }
+    
+    input {
+        width: 100%;
+        padding: clamp(12px, 3.5vw, 16px) clamp(45px, 12vw, 60px) clamp(12px, 3.5vw, 16px) 18px;
+        border: none;
+        border-radius: 60px;
+        background: rgba(255,255,255,.2);
+        color: white;
+        font-size: clamp(14px, 4vw, 17px);
+        transition: all 0.3s ease;
+        font-family: 'Cairo', sans-serif;
+        backdrop-filter: blur(4px);
+    }
+    
+    input::placeholder {
+        color: rgba(255,255,255,.7);
+        font-size: 0.95em;
+    }
+    
+    input:focus {
+        outline: none;
+        background: rgba(255,255,255,.28);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 12px rgba(0,0,0,.15);
+    }
+    
+    /* زر تسجيل الدخول */
+    button {
+        width: 100%;
+        border: none;
+        padding: clamp(14px, 3.8vw, 18px);
+        border-radius: 60px;
+        background: white;
+        color: #667eea;
+        font-size: clamp(16px, 4.5vw, 20px);
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        margin-top: 12px;
+        font-family: 'Cairo', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        letter-spacing: 0.5px;
+    }
+    
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(0,0,0,.2);
+        background: #f8f9ff;
+    }
+    
+    button:active {
+        transform: translateY(1px);
+    }
+    
+    /* رسالة الخطأ */
+    .error {
+        background: rgba(220, 53, 69, 0.85);
+        backdrop-filter: blur(8px);
+        color: white;
+        padding: 14px 18px;
+        border-radius: 60px;
+        margin-bottom: 22px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,.4);
+        font-weight: 600;
+        font-size: clamp(13px, 3.5vw, 15px);
+        animation: shake 0.3s ease;
+    }
+    
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        75% { transform: translateX(6px); }
+    }
+    
+    /* فوتر */
+    .footer {
+        margin-top: clamp(20px, 5vh, 32px);
+        text-align: center;
+        color: rgba(255,255,255,.85);
+        font-size: clamp(12px, 3vw, 14px);
+        line-height: 1.6;
+        border-top: 1px solid rgba(255,255,255,.2);
+        padding-top: 18px;
+    }
+    
+    /* ========================= */
+    /* توافق مذهل لكل الأجهزة */
+    /* ========================= */
+    
+    /* الأجهزة الصغيرة جداً (أقل من 380px) */
+    @media (max-width: 380px) {
+        body {
+            padding: 12px;
+        }
+        .login-container {
+            border-radius: 32px;
+            padding: 20px 16px;
+        }
+        .input-box span {
+            right: 14px;
+            font-size: 18px;
+        }
+        input {
+            padding-right: 48px;
+        }
+        button {
+            gap: 5px;
+        }
+    }
+    
+    /* أجهزة متوسطة وصغيرة (تابلت) */
+    @media (min-width: 481px) and (max-width: 768px) {
+        .login-container {
+            max-width: 460px;
+            border-radius: 44px;
+        }
+        .logo-img {
+            width: 95px;
+            height: 95px;
+        }
+        input {
+            padding: 14px 50px 14px 20px;
+        }
+    }
+    
+    /* حواسب لوحية كبيرة وشاشات HD */
+    @media (min-width: 769px) and (max-width: 1200px) {
+        .login-container {
+            max-width: 520px;
+        }
+        .logo-img {
+            width: 110px;
+            height: 110px;
+        }
+    }
+    
+    /* شاشات عريضة جداً (4K) */
+    @media (min-width: 1600px) {
+        .login-container {
+            max-width: 580px;
+        }
+        .logo-img {
+            width: 130px;
+            height: 130px;
+        }
+        .logo-box h1 {
+            font-size: 42px;
+        }
+        input {
+            font-size: 18px;
+            padding: 18px 65px 18px 24px;
+        }
+        button {
+            font-size: 20px;
+            padding: 18px;
+        }
+    }
+    
+    /* تحسين الهواتف ذات الشاشات الطويلة (21:9) */
+    @media (max-aspect-ratio: 13/20) {
+        .login-container {
+            margin: 10px auto;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+    }
+    
+    /* دعم الوضع الأفقي (Landscape) على الهواتف */
+    @media (max-height: 500px) and (orientation: landscape) {
+        body {
+            padding: 10px;
+            align-items: flex-start;
+        }
+        .login-container {
+            margin: 15px auto;
+            padding: 18px 25px;
+        }
+        .logo-box {
+            margin-bottom: 15px;
+        }
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 5px;
+        }
+        .logo-box h1 {
+            font-size: 22px;
+        }
+        .input-group {
+            margin-bottom: 12px;
+        }
+        .footer {
+            margin-top: 12px;
+            padding-top: 10px;
+        }
+    }
+    
+    /* تحسين خاص بالقوائم المنسدلة ولمس الأزرار */
+    @media (hover: hover) and (pointer: fine) {
+        button:hover {
+            transform: translateY(-3px);
+        }
+    }
+    
+    /* تحسين تفاعل اللمس */
+    @media (pointer: coarse) {
+        button, input, .logo-img {
+            cursor: pointer;
+        }
+        button:active {
+            transform: scale(0.97);
+            transition: 0.05s;
+        }
+        input {
+            font-size: 16px; /* منع تكبير تلقائي في iOS */
+        }
+    }
+    
+    /* إزالة الخلفيات المزعجة في التصفح المظلم تلقائياً */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        transition: background-color 600000s 0s, color 600000s 0s;
+    }
+    input:-webkit-autofill {
+        -webkit-text-fill-color: white !important;
+        caret-color: white;
+    }
+    
+    /* تصميم أنيق للتمرير */
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.6);
+        border-radius: 10px;
+    }
 </style>
-
 </head>
-
 <body>
-
 <div class="login-container">
-
-<div class="logo-box">
-
-<img
-src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg"
-alt="ملوك النزاهة"
-class="logo-img">
-
-<h1>ملوك النزاهة</h1>
-
-<p>
-لوحة التحكم الخاصة بالإدارة
-</p>
-
-</div>
-
-<div id="errorMsg"
-class="error"
-style="display:none;">
-</div>
-
-<form id="loginForm">
-
-<div class="input-group">
-
-<label>
-👤 اسم المستخدم
-</label>
-
-<div class="input-box">
-
-<span>👤</span>
-
-<input
-type="text"
-id="username"
-placeholder="أدخل اسم المستخدم"
-required>
-
-</div>
-
-</div>
-
-<div class="input-group">
-
-<label>
-🔒 كلمة المرور
-</label>
-
-<div class="input-box">
-
-<span>🔒</span>
-
-<input
-type="password"
-id="password"
-placeholder="أدخل كلمة المرور"
-required>
-
-</div>
-
-</div>
-
-<button type="submit">
-
-🚪 تسجيل الدخول
-
-</button>
-
-</form>
-
-<div class="footer">
-
-<p>
-© جميع الحقوق محفوظة
-</p>
-
-<p>
-ملوك النزاهة
-</p>
-
-</div>
-
+    <div class="logo-box">
+        <img src="https://i.postimg.cc/hP9Y9djm/IMG-20260510-WA0000.jpg" alt="ملوك النزاهة" class="logo-img">
+        <h1>ملوك النزاهة</h1>
+        <p>لوحة التحكم الخاصة بالإدارة</p>
+    </div>
+    <div id="errorMsg" class="error" style="display:none;"></div>
+    <form id="loginForm">
+        <div class="input-group">
+            <label>👤 اسم المستخدم</label>
+            <div class="input-box">
+                <span>👤</span>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم" required autocomplete="username">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>🔒 كلمة المرور</label>
+            <div class="input-box">
+                <span>🔒</span>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
+            </div>
+        </div>
+        <button type="submit">🚪 تسجيل الدخول</button>
+    </form>
+    <div class="footer">
+        <p>© جميع الحقوق محفوظة</p>
+        <p>ملوك النزاهة</p>
+    </div>
 </div>
 
 <script>
-
-// تحديد API URL تلقائياً
-const API_URL = window.location.origin;
-
-document.getElementById('loginForm')
-.addEventListener('submit', async (e) => {
-
-e.preventDefault();
-
-const username =
-document.getElementById('username').value;
-
-const password =
-document.getElementById('password').value;
-
-try {
-
-const response =
-await fetch(`${API_URL}/api/login`, {
-
-method:'POST',
-
-headers:{
-'Content-Type':'application/json'
-},
-
-body:JSON.stringify({
-username,
-password
-})
-
-});
-
-const data = await response.json();
-
-if(response.ok){
-
-localStorage.setItem('token', data.token);
-
-window.location.href='/dashboard';
-
-}else{
-
-showError(
-data.message ||
-'❌ اسم المستخدم أو كلمة المرور غير صحيحة'
-);
-
-}
-
-}catch(error){
-
-showError(
-'⚠️ حدث خطأ في الاتصال بالخادم'
-);
-
-}
-
-});
-
-function showError(message){
-
-const errorDiv =
-document.getElementById('errorMsg');
-
-errorDiv.textContent = message;
-
-errorDiv.style.display = 'block';
-
-setTimeout(() => {
-
-errorDiv.style.display = 'none';
-
-},3000);
-
-}
-
+    // تحديد API URL بشكل ديناميكي
+    const API_URL = window.location.origin;
+    
+    // عناصر DOM
+    const loginForm = document.getElementById('loginForm');
+    const errorDiv = document.getElementById('errorMsg');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    // دالة عرض الأخطاء مع تحسينات للهواتف (تظهر بشكل أنيق)
+    function showError(message) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        // اهتزاز بسيط لجذب الانتباه (محسن)
+        errorDiv.style.animation = 'none';
+        errorDiv.offsetHeight; // إعادة تعيين الأنيميشن
+        errorDiv.style.animation = 'shake 0.3s ease';
+        
+        // تمرير سلس إلى رسالة الخطأ إذا كانت خارج الشاشة (للهواتف الصغيرة)
+        if (window.innerWidth <= 550) {
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // إخفاء تلقائي بعد 4 ثوان
+        setTimeout(() => {
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+                errorDiv.style.animation = '';
+            }
+        }, 4000);
+    }
+    
+    // تنظيف الرسالة عند الكتابة
+    function clearErrorOnInput() {
+        if (errorDiv.style.display === 'block') {
+            errorDiv.style.display = 'none';
+        }
+    }
+    usernameInput.addEventListener('input', clearErrorOnInput);
+    passwordInput.addEventListener('input', clearErrorOnInput);
+    
+    // معالجة إرسال الفورم مع دعم كامل للأجهزة
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+        
+        // التحقق السريع على الجهة الأمامية
+        if (!username || !password) {
+            showError('⚠️ الرجاء إدخال اسم المستخدم وكلمة المرور');
+            return;
+        }
+        
+        // تعطيل الزر أثناء الطلب - تحسين UX رائع
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '⏳ جاري التحقق...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.8';
+        
+        try {
+            const response = await fetch(`${API_URL}/api/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // حفظ التوكن وتوجيه المستخدم
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                } else if (data.access_token) {
+                    localStorage.setItem('token', data.access_token);
+                } else {
+                    localStorage.setItem('token', JSON.stringify(data));
+                }
+                // إضافة تأثير بسيط قبل الانتقال
+                submitBtn.innerHTML = '✅ تم بنجاح...';
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 120);
+            } else {
+                // عرض رسالة الخطأ من الخادم أو رسالة عامة
+                const errorMsg = data.message || data.error || '❌ اسم المستخدم أو كلمة المرور غير صحيحة';
+                showError(errorMsg);
+                // إعادة تمكين الزر
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                // فركشة الحقول قليلاً (تنبيه لطيف)
+                usernameInput.style.transform = 'translateX(3px)';
+                passwordInput.style.transform = 'translateX(3px)';
+                setTimeout(() => {
+                    usernameInput.style.transform = '';
+                    passwordInput.style.transform = '';
+                }, 200);
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            let friendlyError = '⚠️ حدث خطأ في الاتصال بالخادم';
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                friendlyError = '⚠️ لا يمكن الاتصال بالخادم. تأكد من اتصالك بالإنترنت أو حاول لاحقاً.';
+            } else if (error.message) {
+                friendlyError = `⚠️ ${error.message}`;
+            }
+            showError(friendlyError);
+            // إعادة تفعيل الزر
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
+    });
+    
+    // إضافة دعم خاص للأجهزة التي تفضل إظهار لوحة المفاتيح بطريقة سلسة
+    if ('virtualKeyboard' in navigator) {
+        // دعم لوحة المفاتيح الافتراضية في البيئات الحديثة
+        navigator.virtualKeyboard.overlaysContent = true;
+    }
+    
+    // تحسين العرض للهواتف: عند النقر على حقل الإدخال لا يغطي الزر
+    const inputs = [usernameInput, passwordInput];
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            if (window.innerWidth <= 600 && window.innerHeight <= 700) {
+                setTimeout(() => {
+                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 200);
+            }
+        });
+    });
+    
+    // إضافة ميزة إظهار / إخفاء كلمة المرور (لرفع تجربة المستخدم + توافق)
+    // نضيف زر عين صغير داخل حقل الباسورد بطريقة ذكية وغير متطفلة
+    const enhancePasswordToggle = () => {
+        const parentDiv = passwordInput.closest('.input-box');
+        if (!parentDiv || parentDiv.querySelector('.toggle-pwd')) return;
+        
+        const toggleSpan = document.createElement('span');
+        toggleSpan.innerHTML = '👁️';
+        toggleSpan.className = 'toggle-pwd';
+        toggleSpan.style.cssText = `
+            position: absolute;
+            left: 18px;
+            right: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            cursor: pointer;
+            color: rgba(255,255,255,0.9);
+            background: transparent;
+            z-index: 5;
+            transition: 0.2s;
+            pointer-events: auto;
+        `;
+        toggleSpan.setAttribute('aria-label', 'إظهار/إخفاء كلمة المرور');
+        
+        let isPasswordVisible = false;
+        toggleSpan.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleSpan.innerHTML = '🙈';
+                isPasswordVisible = true;
+            } else {
+                passwordInput.type = 'password';
+                toggleSpan.innerHTML = '👁️';
+                isPasswordVisible = false;
+            }
+            // إعادة التركيز بعد التغيير (لأجهزة اللمس)
+            passwordInput.focus();
+        });
+        
+        parentDiv.appendChild(toggleSpan);
+        // ضبط المسافة اليسرى في المدخلات حتى لا تتداخل مع العين
+        passwordInput.style.paddingLeft = '50px';
+    };
+    
+    // دالة حماية للتأكد من إضافة العين عند تحميل DOM بالكامل
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enhancePasswordToggle);
+    } else {
+        enhancePasswordToggle();
+    }
+    
+    // دعم خاص للعرض على أجهزة سامسونج وأندرويد المختلفة
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 480) {
+            document.body.style.padding = '12px';
+        } else {
+            document.body.style.padding = '20px';
+        }
+    });
+    
+    // منع مشكلة التكبير التلقائي على iOS
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+        viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover');
+    }
+    
+    // في حالة وجود توكن قديم لا نفعله، لكن نمسحه فقط إذا أردنا (لا نتدخل في تسجيل الدخول)
+    // جميع الوظائف السابقة تعمل بكفاءة مع الحفاظ على نفس منطق API
+    console.log('تم تحميل واجهة ملوك النزاهة');
 </script>
-
 </body>
 </html>
